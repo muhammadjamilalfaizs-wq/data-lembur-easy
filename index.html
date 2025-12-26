@@ -3,476 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekap Kehadiran Kerja</title>
+    <title>HR Attendance System | Sistem Kehadiran</title>
+    
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#2c3e50">
-    <meta name="description" content="Aplikasi Pencatatan Jam Kerja dan Lembur">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-    <!-- End PWA Meta Tags -->
+    <meta name="theme-color" content="#1a365d">
+    <meta name="description" content="Sistem Manajemen Kehadiran dan Perhitungan Gaji Professional">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HR Attendance">
+    
+    <!-- Icons untuk PWA -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    
+    <!-- Manifest -->
+    <link rel="manifest" id="app-manifest">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* ===== VARIABLES & RESET ===== */
+        :root {
+            --primary: #1a365d;
+            --primary-dark: #0f2847;
+            --secondary: #2d3748;
+            --accent: #3182ce;
+            --accent-light: #4299e1;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --light: #f7fafc;
+            --gray-100: #edf2f7;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e0;
+            --gray-600: #718096;
+            --gray-800: #2d3748;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            background-color: #f8fafc;
+            color: var(--gray-800);
             line-height: 1.6;
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
         }
 
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 150px;
-            height: 150px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            transform: translate(40%, -40%);
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
 
         h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            font-size: 2rem;
+            font-weight: 700;
         }
 
-        h1 i {
-            font-size: 32px;
-            color: #3498db;
+        h2 {
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        .date-time {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 16px;
-            margin-top: 10px;
-            color: #ecf0f1;
+        h3 {
+            font-size: 1.25rem;
         }
 
-        .date-time i {
-            color: #3498db;
+        p {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
         }
 
+        /* ===== LAYOUT ===== */
         .container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.2fr;
             gap: 30px;
+            margin-top: 20px;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
             .container {
                 grid-template-columns: 1fr;
             }
         }
 
-        .form-section, .result-section {
-            background-color: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .section-title {
-            font-size: 22px;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title i {
-            color: #3498db;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #34495e;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-
-        .formula {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            border-left: 4px solid #3498db;
+        /* ===== HEADER ===== */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
             position: relative;
+            overflow: hidden;
         }
 
-        .formula h3 {
-            color: #2c3e50;
-            margin-bottom: 8px;
-            font-size: 18px;
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
         }
 
-        .formula p {
-            color: #7f8c8d;
-            font-size: 15px;
-            margin-top: 10px;
-        }
-
-        .edit-salary-btn {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 6px 12px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .edit-salary-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .salary-input-container {
-            display: none;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #ddd;
-        }
-
-        .salary-input-group {
+        .logo {
             display: flex;
-            gap: 10px;
             align-items: center;
-        }
-
-        .salary-input-group input {
-            flex: 1;
-        }
-
-        .buttons {
-            display: flex;
             gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
         }
 
-        button {
-            padding: 14px 24px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+        .logo-icon {
+            background: rgba(255,255,255,0.15);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ===== FORMS ===== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 15px;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+        }
+
+        .form-help {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #2f855a;
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #b7791f;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c53030;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gray-300);
+            color: var(--gray-800);
+        }
+
+        .btn-outline:hover {
+            background: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-group {
+            display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
         }
 
-        .btn-add {
-            background-color: #2ecc71;
-            color: white;
-            flex: 2;
-            min-width: 200px;
-        }
-
-        .btn-add:hover {
-            background-color: #27ae60;
-            transform: translateY(-2px);
-        }
-
-        .btn-reset {
-            background-color: #e74c3c;
-            color: white;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .btn-reset:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .btn-print {
-            background-color: #3498db;
-            color: white;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .btn-print:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .btn-export {
-            background-color: #9b59b6;
-            color: white;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .btn-export:hover {
-            background-color: #8e44ad;
-            transform: translateY(-2px);
-        }
-
-        .btn-feedback {
-            background-color: #f39c12;
-            color: white;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .btn-feedback:hover {
-            background-color: #e67e22;
-            transform: translateY(-2px);
+        /* ===== TABLES ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            background: white;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            min-width: 800px;
         }
 
         th {
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px;
-            text-align: left;
+            background: var(--gray-100);
+            color: var(--gray-800);
             font-weight: 600;
+            text-align: left;
+            padding: 16px;
+            font-size: 0.875rem;
+            border-bottom: 2px solid var(--gray-300);
         }
 
         td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9rem;
         }
 
         tr:hover {
-            background-color: #f9f9f9;
+            background: var(--gray-100);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-completed {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge-pending {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        /* ===== CALCULATION PANEL ===== */
+        .calculation-panel {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            border-left: 4px solid var(--accent);
+            margin-top: 2rem;
+        }
+
+        .calculation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .calculation-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .calc-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .calc-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
         }
 
         .total-row {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-
-        .total-row td {
-            border-top: 2px solid #3498db;
-        }
-
-        .calculation-result {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 25px;
-            border-left: 4px solid #2ecc71;
-        }
-
-        .calculation-result h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed #ddd;
-        }
-
-        .result-item:last-child {
-            font-weight: bold;
-            font-size: 18px;
-            color: #2c3e50;
-            border-bottom: none;
-            padding-top: 10px;
-            margin-top: 10px;
-            border-top: 2px solid #3498db;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 40px 20px;
-            color: #7f8c8d;
-            font-style: italic;
-        }
-
-        .delete-btn {
-            background-color: #e74c3c;
+            background: var(--primary);
             color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-top: 20px;
         }
 
-        .delete-btn:hover {
-            background-color: #c0392b;
+        .total-label {
+            font-size: 1rem;
+            opacity: 0.9;
         }
 
-        .export-section {
-            margin-top: 30px;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #9b59b6;
+        .total-value {
+            font-size: 2rem;
+            font-weight: 700;
         }
 
-        .export-section h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .export-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .export-options {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .export-btn {
-            background-color: #9b59b6;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 20px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .export-btn:hover {
-            background-color: #8e44ad;
-            transform: translateY(-2px);
-        }
-
-        .export-btn.csv {
-            background-color: #2ecc71;
-        }
-
-        .export-btn.csv:hover {
-            background-color: #27ae60;
-        }
-
-        .export-btn.excel {
-            background-color: #3498db;
-        }
-
-        .export-btn.excel:hover {
-            background-color: #2980b9;
-        }
-
-        .export-btn.pdf {
-            background-color: #e74c3c;
-        }
-
-        .export-btn.pdf:hover {
-            background-color: #c0392b;
-        }
-
-        .export-btn.print {
-            background-color: #f39c12;
-        }
-
-        .export-btn.print:hover {
-            background-color: #e67e22;
-        }
-
-        .break-time-note {
-            font-size: 13px;
-            color: #7f8c8d;
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        .break-preset {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .break-preset-btn {
-            background-color: #95a5a6;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 6px 12px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .break-preset-btn:hover {
-            background-color: #7f8c8d;
-        }
-
-        .break-preset-btn.active {
-            background-color: #3498db;
-        }
-
+        /* ===== MODALS ===== */
         .modal {
             display: none;
             position: fixed;
@@ -481,417 +429,11 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-content.large {
-            max-width: 700px;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #3498db;
-        }
-
-        .modal-header h2 {
-            color: #2c3e50;
-            font-size: 22px;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: #7f8c8d;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             align-items: center;
             justify-content: center;
-        }
-
-        .close-modal:hover {
-            color: #e74c3c;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-
-        .footer-links {
-            margin-top: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .footer-link {
-            color: #3498db;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: color 0.3s;
-        }
-
-        .footer-link:hover {
-            color: #2980b9;
-            text-decoration: underline;
-        }
-
-        .highlight {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-
-        .preset-salaries {
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .preset-btn {
-            background-color: #95a5a6;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .preset-btn:hover {
-            background-color: #7f8c8d;
-        }
-
-        .current-salary {
-            color: #2ecc71;
-            font-weight: bold;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-            justify-content: flex-end;
-        }
-
-        .break-info {
-            background-color: #e8f4fc;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-top: 5px;
-            font-size: 14px;
-            color: #2c3e50;
-        }
-
-        .break-info i {
-            color: #3498db;
-            margin-right: 8px;
-        }
-
-        .feedback-section {
-            margin-top: 30px;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #f39c12;
-        }
-
-        .feedback-section h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .feedback-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .feedback-btn {
-            background-color: #f39c12;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 20px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .feedback-btn:hover {
-            background-color: #e67e22;
-            transform: translateY(-2px);
-        }
-
-        .feedback-btn.suggestion {
-            background-color: #3498db;
-        }
-
-        .feedback-btn.suggestion:hover {
-            background-color: #2980b9;
-        }
-
-        .feedback-btn.bug {
-            background-color: #e74c3c;
-        }
-
-        .feedback-btn.bug:hover {
-            background-color: #c0392b;
-        }
-
-        .feedback-btn.feature {
-            background-color: #2ecc71;
-        }
-
-        .feedback-btn.feature:hover {
-            background-color: #27ae60;
-        }
-
-        .email-link {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .email-link:hover {
-            text-decoration: underline;
-        }
-
-        .star-rating {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-            justify-content: center;
-        }
-
-        .star {
-            font-size: 28px;
-            color: #ddd;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .star:hover,
-        .star.active {
-            color: #f39c12;
-        }
-
-        .rating-text {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-
-        .developer-info {
-            background-color: #e8f4fc;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .developer-info h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            border-left: 4px solid #28a745;
-            display: none;
-        }
-
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            border-left: 4px solid #dc3545;
-            display: none;
-        }
-
-        .feedback-category {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .category-btn {
-            padding: 10px 20px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .category-btn:hover {
-            border-color: #3498db;
-            background-color: #f8f9fa;
-        }
-
-        .category-btn.active {
-            border-color: #3498db;
-            background-color: #3498db;
-            color: white;
-        }
-
-        .character-count {
-            text-align: right;
-            font-size: 12px;
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-
-        /* PWA Install Prompt */
-        .pwa-install-prompt {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            display: none;
-            max-width: 350px;
-            animation: slideInUp 0.3s ease;
-        }
-
-        .pwa-install-prompt.show {
-            display: block;
-        }
-
-        .pwa-install-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .pwa-install-text h4 {
-            margin-bottom: 5px;
-            font-size: 16px;
-        }
-
-        .pwa-install-text p {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        .pwa-install-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .pwa-install-btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            flex: 1;
-        }
-
-        .pwa-install-btn.install {
-            background-color: #2ecc71;
-            color: white;
-        }
-
-        .pwa-install-btn.later {
-            background-color: transparent;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .pwa-install-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        @keyframes slideInUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* PWA Offline Indicator */
-        .offline-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            gap: 10px;
             animation: fadeIn 0.3s ease;
-        }
-
-        .offline-indicator.show {
-            display: flex;
         }
 
         @keyframes fadeIn {
@@ -899,569 +441,699 @@
             to { opacity: 1; }
         }
 
-        /* PWA Add to Home Screen Button */
-        .pwa-add-button {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background-color: #3498db;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray-600);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 999;
+            border-radius: 50%;
+        }
+
+        .close-modal:hover {
+            background: var(--gray-100);
+            color: var(--gray-800);
+        }
+
+        /* ===== UTILITIES ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-600);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--gray-400);
+        }
+
+        .text-muted {
+            color: var(--gray-600);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+
+        /* ===== PWA ELEMENTS ===== */
+        .pwa-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .pwa-splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .offline-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger);
+            color: white;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .app-header {
+                padding: 20px;
+            }
+            
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .header-stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn-group .btn {
+                width: 100%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+            }
+        }
+
+        /* ===== EDIT MODE ===== */
+        .edit-mode .card {
+            border: 2px solid var(--warning);
+            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1);
+        }
+
+        .edit-notice {
+            background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
             display: none;
         }
 
-        .pwa-add-button.show {
-            display: flex;
+        .edit-notice.show {
+            display: block;
         }
 
-        .pwa-add-button:hover {
-            background-color: #2980b9;
-            transform: scale(1.1);
+        /* ===== SIDEBAR NAV (Mobile) ===== */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            padding: 10px;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-600);
+            font-size: 0.75rem;
+            padding: 8px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+            background: var(--gray-100);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: block;
+            }
+            
+            body {
+                padding-bottom: 70px;
+            }
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* ===== TOOLTIPS ===== */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+        }
+
+        [data-tooltip]:hover::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-800);
+            color: white;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 100;
+            margin-bottom: 5px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .no-print, .btn, .mobile-nav, .pwa-install-prompt {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+                max-width: none;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+            
+            h1, h2, h3 {
+                color: black;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- PWA Install Prompt -->
-    <div id="pwa-install-prompt" class="pwa-install-prompt">
-        <button id="pwa-install-close" class="pwa-install-close">&times;</button>
-        <div class="pwa-install-content">
-            <i class="fas fa-download fa-2x"></i>
-            <div class="pwa-install-text">
-                <h4>Instal Aplikasi</h4>
-                <p>Instal aplikasi ini ke perangkat Anda untuk pengalaman yang lebih baik dan akses offline.</p>
-                <div class="pwa-install-buttons">
-                    <button id="pwa-install-btn" class="pwa-install-btn install">Instal</button>
-                    <button id="pwa-install-later" class="pwa-install-btn later">Nanti</button>
-                </div>
-            </div>
+    <!-- Splash Screen -->
+    <div id="pwa-splash" class="pwa-splash">
+        <div class="logo-icon">
+            <i class="fas fa-chart-line"></i>
         </div>
+        <h1 style="color: white; margin-top: 20px;">HR Attendance System</h1>
+        <p style="color: rgba(255,255,255,0.8);">Loading professional workspace...</p>
     </div>
 
-    <!-- PWA Offline Indicator -->
+    <!-- Offline Indicator -->
     <div id="offline-indicator" class="offline-indicator">
         <i class="fas fa-wifi-slash"></i>
-        <span>Anda sedang offline</span>
+        <span>You're offline. Working in limited mode.</span>
     </div>
 
-    <!-- PWA Add to Home Screen Button -->
-    <div id="pwa-add-button" class="pwa-add-button">
-        <i class="fas fa-plus"></i>
-    </div>
-
-    <header>
-        <h1><i class="fas fa-clock"></i> Sistem Pencatatan Jam Kerja</h1>
-        <p>Catat dan hitung jam kerja serta lembur dengan mudah</p>
-        <div class="date-time">
-            <div><i class="far fa-calendar"></i> <span id="current-date">19 Desember 2025</span></div>
-            <div><i class="far fa-clock"></i> <span id="current-time">05:31</span></div>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-top">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div>
+                    <h1>HR Attendance System</h1>
+                    <p>Sistem Manajemen Kehadiran Professional</p>
+                </div>
+            </div>
+            <div class="text-center">
+                <div id="current-date" class="stat-value">19 Des 2025</div>
+                <div id="current-time" class="stat-label">05:31:45</div>
+            </div>
+        </div>
+        
+        <div class="header-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-total-hours">0</div>
+                <div class="stat-label">Total Jam Kerja</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-total-days">0</div>
+                <div class="stat-label">Hari Kerja</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-estimated-salary">Rp 0</div>
+                <div class="stat-label">Estimasi Gaji</div>
+            </div>
         </div>
     </header>
 
+    <!-- Main Container -->
     <div class="container">
-        <section class="form-section">
-            <h2 class="section-title"><i class="fas fa-edit"></i> Input Data Kehadiran</h2>
-            
-            <div class="formula">
-                <h3>
-                    <span>Rumus Perhitungan Gaji</span>
-                    <button class="edit-salary-btn" id="edit-salary-btn">
-                        <i class="fas fa-edit"></i> Edit Gaji
-                    </button>
-                </h3>
-                <p id="formula-text">5.500.000 : 173 x total jam kerja</p>
+        <!-- Left Column: Input Form -->
+        <div>
+            <div class="card mb-4">
+                <h2><i class="fas fa-calendar-plus mr-2"></i>Input Kehadiran</h2>
                 
-                <div class="salary-input-container" id="salary-input-container">
-                    <div class="salary-input-group">
-                        <input type="number" id="monthly-salary" placeholder="Masukkan gaji bulanan" min="100000" step="50000">
-                        <button type="button" id="save-salary-btn" class="btn-add" style="padding: 10px 15px;">
-                            <i class="fas fa-save"></i> Simpan
+                <div class="edit-notice" id="edit-notice">
+                    <i class="fas fa-edit mr-2"></i>
+                    <strong>Edit Mode</strong> - Anda sedang mengedit data kehadiran
+                </div>
+                
+                <form id="attendance-form">
+                    <div class="form-group">
+                        <label class="form-label" for="date"><i class="far fa-calendar mr-1"></i>Tanggal Kerja</label>
+                        <input type="date" id="date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label class="form-label" for="start-time">Jam Masuk</label>
+                            <input type="time" id="start-time" class="form-control" value="08:00" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="end-time">Jam Pulang</label>
+                            <input type="time" id="end-time" class="form-control" value="17:00" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="break-time"><i class="fas fa-coffee mr-1"></i>Waktu Istirahat</label>
+                        <select id="break-time" class="form-control">
+                            <option value="1">1 jam (Standar)</option>
+                            <option value="0.5">30 menit</option>
+                            <option value="1.5">1 jam 30 menit</option>
+                            <option value="2">2 jam</option>
+                            <option value="0">Tidak ada</option>
+                        </select>
+                        <div class="form-help">Waktu istirahat tidak termasuk dalam perhitungan jam kerja</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="overtime"><i class="fas fa-clock mr-1"></i>Jam Lembur (Opsional)</label>
+                        <input type="number" id="overtime" class="form-control" min="0" step="0.5" placeholder="Contoh: 3.5">
+                        <div class="form-help">Masukkan dalam format jam (contoh: 3.5 untuk 3 jam 30 menit)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="note"><i class="fas fa-sticky-note mr-1"></i>Catatan</label>
+                        <textarea id="note" class="form-control" rows="3" placeholder="Tambah catatan (kontrak, meeting, tugas khusus, dll.)"></textarea>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="submit" id="submit-btn" class="btn btn-primary">
+                            <i class="fas fa-save mr-2"></i>Simpan Kehadiran
+                        </button>
+                        <button type="button" id="update-btn" class="btn btn-warning" style="display: none;">
+                            <i class="fas fa-sync-alt mr-2"></i>Update Data
+                        </button>
+                        <button type="button" id="cancel-edit" class="btn btn-outline" style="display: none;">
+                            <i class="fas fa-times mr-2"></i>Batal
+                        </button>
+                        <button type="reset" class="btn btn-outline">
+                            <i class="fas fa-redo mr-2"></i>Reset Form
                         </button>
                     </div>
                     
-                    <div class="preset-salaries">
-                        <p>Pilih gaji preset:</p>
-                        <button type="button" class="preset-btn" data-salary="4500000">Rp 4.500.000</button>
-                        <button type="button" class="preset-btn" data-salary="5500000">Rp 5.500.000</button>
-                        <button type="button" class="preset-btn" data-salary="6500000">Rp 6.500.000</button>
-                        <button type="button" class="preset-btn" data-salary="7500000">Rp 7.500.000</button>
-                        <button type="button" class="preset-btn" data-salary="8500000">Rp 8.500.000</button>
-                    </div>
-                </div>
+                    <input type="hidden" id="edit-index" value="-1">
+                </form>
             </div>
             
-            <form id="attendance-form">
-                <div class="form-group">
-                    <label for="date"><i class="far fa-calendar-alt"></i> Tanggal</label>
-                    <input type="date" id="date" required>
-                </div>
+            <!-- Salary Configuration -->
+            <div class="card">
+                <h2><i class="fas fa-calculator mr-2"></i>Konfigurasi Gaji</h2>
                 
                 <div class="form-group">
-                    <label for="start-time"><i class="far fa-clock"></i> Jam Mulai</label>
-                    <input type="time" id="start-time" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="end-time"><i class="far fa-clock"></i> Jam Selesai</label>
-                    <input type="time" id="end-time" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="break-time"><i class="fas fa-coffee"></i> Jam Istirahat</label>
-                    <select id="break-time" required>
-                        <option value="0">Tidak ada istirahat</option>
-                        <option value="0.5">30 menit</option>
-                        <option value="1" selected>1 jam</option>
-                        <option value="1.5">1 jam 30 menit</option>
-                        <option value="2">2 jam</option>
-                        <option value="custom">Custom (jam.desimal)</option>
-                    </select>
-                    <div class="break-time-note">
-                        *Waktu istirahat tidak dihitung sebagai jam kerja
+                    <label class="form-label">Gaji Bulanan</label>
+                    <div class="input-group" style="display: flex; gap: 10px;">
+                        <input type="number" id="monthly-salary" class="form-control" value="5500000" min="1000000" step="500000">
+                        <button type="button" id="save-salary" class="btn btn-success">
+                            <i class="fas fa-check mr-2"></i>Simpan
+                        </button>
                     </div>
-                    
-                    <div class="break-preset">
-                        <button type="button" class="break-preset-btn" data-break="0">Tanpa Istirahat</button>
-                        <button type="button" class="break-preset-btn active" data-break="1">1 Jam</button>
-                        <button type="button" class="break-preset-btn" data-break="1.5">1.5 Jam</button>
-                    </div>
-                    
-                    <div id="custom-break-container" style="display: none; margin-top: 10px;">
-                        <input type="number" id="custom-break-time" min="0" step="0.5" placeholder="Masukkan jam istirahat (contoh: 1.5 untuk 1 jam 30 menit)">
-                    </div>
+                    <div class="form-help">Gaji digunakan untuk menghitung upah per jam (dibagi 173 jam kerja bulanan)</div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="overtime"><i class="fas fa-business-time"></i> Jam Lembur (jika ada)</label>
-                    <input type="number" id="overtime" min="0" step="0.5" placeholder="Contoh: 3.5">
-                </div>
-                
-                <div class="form-group">
-                    <label for="note"><i class="far fa-sticky-note"></i> Keterangan</label>
-                    <textarea id="note" rows="3" placeholder="Contoh: Ttd kontrak, Induction, Kerja lembur, dll."></textarea>
-                </div>
-                
-                <div class="break-info">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>Contoh:</strong> Kerja 07.00-16.00 dengan istirahat 1 jam = 8 jam kerja
-                </div>
-                
-                <div class="buttons">
-                    <button type="submit" class="btn-add"><i class="fas fa-plus-circle"></i> Tambah Data</button>
-                    <button type="button" id="reset-form" class="btn-reset"><i class="fas fa-redo"></i> Reset Form</button>
-                    <button type="button" id="print-btn" class="btn-print"><i class="fas fa-print"></i> Cetak</button>
-                    <button type="button" id="export-csv-btn" class="btn-export"><i class="fas fa-file-export"></i> Export</button>
-                    <button type="button" id="feedback-btn" class="btn-feedback"><i class="fas fa-comment-alt"></i> Kritik & Saran</button>
-                </div>
-            </form>
-        </section>
-        
-        <section class="result-section">
-            <h2 class="section-title"><i class="fas fa-list-alt"></i> Rekap Kehadiran</h2>
-            
-            <div id="attendance-table-container">
-                <table id="attendance-table">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Jam</th>
-                            <th>Istirahat</th>
-                            <th>Lembur</th>
-                            <th>Total Jam</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="attendance-data">
-                        <!-- Data akan ditampilkan di sini -->
-                    </tbody>
-                </table>
-                
-                <div id="empty-message" class="empty-message">
-                    <i class="far fa-clipboard fa-3x" style="margin-bottom: 15px;"></i>
-                    <p>Belum ada data kehadiran. Silakan tambah data menggunakan form di sebelah kiri.</p>
-                </div>
-            </div>
-            
-            <div class="calculation-result">
-                <h3><i class="fas fa-calculator"></i> Perhitungan Gaji</h3>
-                <div class="result-item">
-                    <span>Gaji bulanan:</span>
-                    <span id="display-monthly-salary" class="current-salary">Rp 5.500.000</span>
-                </div>
-                <div class="result-item">
-                    <span>Total jam kerja:</span>
-                    <span id="calc-total-hours">0 jam</span>
-                </div>
-                <div class="result-item">
-                    <span>Total jam lembur:</span>
-                    <span id="calc-total-overtime">0 jam</span>
-                </div>
-                <div class="result-item">
-                    <span>Gaji per jam:</span>
-                    <span id="hourly-rate">Rp 31.792</span>
-                </div>
-                <div class="result-item">
-                    <span>Perkiraan gaji:</span>
-                    <span id="estimated-salary">Rp 0</span>
-                </div>
-            </div>
-
-            <div class="export-section">
-                <h3><i class="fas fa-file-export"></i> Export Data</h3>
-                <div class="export-options">
-                    <button id="export-csv" class="export-btn csv">
-                        <i class="fas fa-file-csv"></i> Export CSV
-                    </button>
-                    <button id="export-pdf" class="export-btn pdf">
-                        <i class="fas fa-file-pdf"></i> Export PDF
-                    </button>
-                    <button id="export-excel" class="export-btn excel">
-                        <i class="fas fa-file-excel"></i> Export Excel
-                    </button>
-                    <button id="export-print" class="export-btn print">
-                        <i class="fas fa-print"></i> Cetak Laporan
-                    </button>
-                </div>
-            </div>
-
-            <div class="feedback-section">
-                <h3><i class="fas fa-comment-alt"></i> Kritik & Saran</h3>
-                <p>Bantu kami meningkatkan aplikasi ini dengan mengirimkan kritik dan saran Anda.</p>
-                
-                <div class="feedback-buttons">
-                    <button id="send-feedback-btn" class="feedback-btn">
-                        <i class="fas fa-paper-plane"></i> Kirim Kritik & Saran
-                    </button>
-                    <button id="report-bug-btn" class="feedback-btn bug">
-                        <i class="fas fa-bug"></i> Laporkan Bug
-                    </button>
-                    <button id="suggest-feature-btn" class="feedback-btn feature">
-                        <i class="fas fa-lightbulb"></i> Saran Fitur
-                    </button>
-                </div>
-
-                <div class="developer-info">
-                    <h4><i class="fas fa-user-tie"></i> Informasi Developer</h4>
-                    <p>Email: <a href="mailto:muhammadjamilalfaizs@gmail.com" class="email-link">muhammadjamilalfaizs@gmail.com</a></p>
-                    <p>Semua kritik dan saran akan sangat membantu pengembangan aplikasi ini.</p>
-                </div>
-            </div>
-            
-            <button id="reset-all-btn" class="btn-reset" style="margin-top: 20px; width: 100%;">
-                <i class="fas fa-trash-alt"></i> Hapus Semua Data
-            </button>
-        </section>
-    </div>
-
-    <!-- Modal Export CSV -->
-    <div id="export-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-file-csv"></i> Export Data Ke CSV</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Pilih opsi export untuk data kehadiran:</p>
-                
-                <div class="form-group" style="margin-top: 20px;">
-                    <label for="export-filename"><i class="fas fa-file-signature"></i> Nama File</label>
-                    <input type="text" id="export-filename" value="rekap-kehadiran" placeholder="Nama file tanpa ekstensi">
-                </div>
-                
-                <div class="form-group">
-                    <label for="export-date-range"><i class="fas fa-calendar-alt"></i> Rentang Tanggal</label>
-                    <select id="export-date-range">
-                        <option value="all">Semua Data</option>
-                        <option value="week">Minggu Ini</option>
-                        <option value="month">Bulan Ini</option>
-                        <option value="custom">Custom</option>
-                    </select>
-                </div>
-                
-                <div id="custom-date-range" style="display: none;">
-                    <div class="form-group">
-                        <label for="export-start-date">Dari Tanggal</label>
-                        <input type="date" id="export-start-date">
-                    </div>
-                    <div class="form-group">
-                        <label for="export-end-date">Sampai Tanggal</label>
-                        <input type="date" id="export-end-date">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label style="display: flex; align-items: center; gap: 10px;">
-                        <input type="checkbox" id="include-summary" checked>
-                        <span>Termasuk ringkasan perhitungan gaji</span>
-                    </label>
-                </div>
-                
-                <div class="action-buttons">
-                    <button id="confirm-export-csv" class="btn-add">
-                        <i class="fas fa-download"></i> Download CSV
-                    </button>
-                    <button id="cancel-export" class="btn-reset">
-                        <i class="fas fa-times"></i> Batal
-                    </button>
+                <div class="preset-buttons" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+                    <button type="button" class="btn btn-outline btn-sm" data-salary="4500000">Rp 4,5 JT</button>
+                    <button type="button" class="btn btn-outline btn-sm" data-salary="5500000">Rp 5,5 JT</button>
+                    <button type="button" class="btn btn-outline btn-sm" data-salary="6500000">Rp 6,5 JT</button>
+                    <button type="button" class="btn btn-outline btn-sm" data-salary="7500000">Rp 7,5 JT</button>
+                    <button type="button" class="btn btn-outline btn-sm" data-salary="8500000">Rp 8,5 JT</button>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Modal Kritik & Saran -->
-    <div id="feedback-modal" class="modal">
-        <div class="modal-content large">
-            <div class="modal-header">
-                <h2><i class="fas fa-comment-alt"></i> Kirim Kritik & Saran</h2>
-                <button class="close-modal">&times;</button>
+        
+        <!-- Right Column: Data & Reports -->
+        <div>
+            <!-- Attendance Records -->
+            <div class="card mb-4">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2><i class="fas fa-history mr-2"></i>Riwayat Kehadiran</h2>
+                    <div>
+                        <button id="export-data" class="btn btn-outline btn-sm">
+                            <i class="fas fa-download mr-2"></i>Export
+                        </button>
+                        <button id="print-data" class="btn btn-outline btn-sm">
+                            <i class="fas fa-print mr-2"></i>Print
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Jam Kerja</th>
+                                <th>Istirahat</th>
+                                <th>Lembur</th>
+                                <th>Total</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-data">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="empty-state" class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>Belum Ada Data</h3>
+                        <p>Mulai dengan menambahkan data kehadiran Anda</p>
+                        <button id="add-first-data" class="btn btn-primary mt-2">
+                            <i class="fas fa-plus mr-2"></i>Tambah Data Pertama
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <div id="feedback-success" class="success-message">
-                    <i class="fas fa-check-circle"></i> Terima kasih! Kritik dan saran Anda telah berhasil dikirim ke developer.
-                </div>
+            
+            <!-- Salary Calculation -->
+            <div class="card calculation-panel">
+                <h2><i class="fas fa-chart-bar mr-2"></i>Ringkasan Gaji</h2>
                 
-                <div id="feedback-error" class="error-message">
-                    <i class="fas fa-exclamation-circle"></i> <span id="error-text">Terjadi kesalahan. Silakan coba lagi.</span>
-                </div>
-                
-                <p>Bantu kami meningkatkan aplikasi dengan mengirimkan kritik, saran, atau laporan bug.</p>
-                
-                <div class="feedback-category">
-                    <button type="button" class="category-btn active" data-category="suggestion">Saran</button>
-                    <button type="button" class="category-btn" data-category="bug">Laporan Bug</button>
-                    <button type="button" class="category-btn" data-category="feature">Permintaan Fitur</button>
-                    <button type="button" class="category-btn" data-category="criticism">Kritik</button>
-                    <button type="button" class="category-btn" data-category="other">Lainnya</button>
-                </div>
-                
-                <div class="form-group">
-                    <label for="feedback-name"><i class="fas fa-user"></i> Nama (opsional)</label>
-                    <input type="text" id="feedback-name" placeholder="Nama Anda">
-                </div>
-                
-                <div class="form-group">
-                    <label for="feedback-email"><i class="fas fa-envelope"></i> Email (opsional)</label>
-                    <input type="email" id="feedback-email" placeholder="email@contoh.com">
-                    <div class="break-time-note">
-                        *Email hanya untuk follow up jika diperlukan
+                <div class="calculation-grid">
+                    <div class="calculation-item">
+                        <div class="calc-value" id="calc-total-days">0</div>
+                        <div class="calc-label">Hari Kerja</div>
+                    </div>
+                    <div class="calculation-item">
+                        <div class="calc-value" id="calc-total-hours">0</div>
+                        <div class="calc-label">Total Jam</div>
+                    </div>
+                    <div class="calculation-item">
+                        <div class="calc-value" id="calc-overtime-hours">0</div>
+                        <div class="calc-label">Jam Lembur</div>
+                    </div>
+                    <div class="calculation-item">
+                        <div class="calc-value" id="calc-hourly-rate">Rp 0</div>
+                        <div class="calc-label">Upah per Jam</div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="feedback-subject"><i class="fas fa-heading"></i> Subjek</label>
-                    <input type="text" id="feedback-subject" placeholder="Contoh: Saran untuk fitur baru" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="feedback-message"><i class="fas fa-comment"></i> Pesan</label>
-                    <textarea id="feedback-message" rows="6" placeholder="Tuliskan kritik, saran, atau laporan bug Anda di sini..." required></textarea>
-                    <div class="character-count">
-                        <span id="char-count">0</span>/1000 karakter
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Rating Aplikasi</label>
-                    <div class="rating-text">Berikan rating untuk aplikasi ini:</div>
-                    <div class="star-rating">
-                        <span class="star" data-value="1">☆</span>
-                        <span class="star" data-value="2">☆</span>
-                        <span class="star" data-value="3">☆</span>
-                        <span class="star" data-value="4">☆</span>
-                        <span class="star" data-value="5">☆</span>
-                    </div>
-                    <input type="hidden" id="feedback-rating" value="0">
-                </div>
-                
-                <div class="developer-info">
-                    <h4><i class="fas fa-paper-plane"></i> Kritik & Saran akan dikirim ke:</h4>
-                    <p><strong>Email Developer:</strong> <a href="mailto:muhammadjamilalfaizs@gmail.com" class="email-link">muhammadjamilalfaizs@gmail.com</a></p>
-                    <p><strong>Tujuan:</strong> Meningkatkan kualitas aplikasi untuk pengalaman pengguna yang lebih baik</p>
-                </div>
-                
-                <div class="action-buttons">
-                    <button id="send-feedback" class="btn-add">
-                        <i class="fas fa-paper-plane"></i> Kirim ke Developer
-                    </button>
-                    <button id="cancel-feedback" class="btn-reset">
-                        <i class="fas fa-times"></i> Batal
-                    </button>
+                <div class="total-row">
+                    <div class="total-label">ESTIMASI TOTAL GAJI</div>
+                    <div class="total-value" id="calc-total-salary">Rp 0</div>
                 </div>
             </div>
         </div>
     </div>
     
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <div class="nav-items">
+            <a href="#form" class="nav-item active">
+                <i class="fas fa-plus-circle"></i>
+                <span>Tambah</span>
+            </a>
+            <a href="#history" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>Riwayat</span>
+            </a>
+            <a href="#salary" class="nav-item">
+                <i class="fas fa-calculator"></i>
+                <span>Gaji</span>
+            </a>
+            <a href="#export" class="nav-item">
+                <i class="fas fa-download"></i>
+                <span>Export</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Footer -->
     <footer>
-        <p>Sistem Rekap Kehadiran Kerja Mandiri | © 2025 Sistem Pencatatan Kehadiran</p>
-        
-        <div class="footer-links">
-            <a href="mailto:muhammadjamilalfaizs@gmail.com" class="footer-link">
-                <i class="fas fa-envelope"></i> Kontak Developer
-            </a>
-            <a href="#" id="footer-feedback" class="footer-link">
-                <i class="fas fa-comment-alt"></i> Beri Masukan
-            </a>
-            <a href="#" id="footer-bug" class="footer-link">
-                <i class="fas fa-bug"></i> Laporkan Bug
-            </a>
+        <div class="footer-content">
+            <div>
+                <p>© 2025 HR Attendance System v2.0</p>
+                <p class="text-muted">Sistem Manajemen Kehadiran Professional</p>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link" id="contact-support">
+                    <i class="fas fa-headset mr-1"></i>Support
+                </a>
+                <a href="#" class="footer-link" id="send-feedback">
+                    <i class="fas fa-comment-alt mr-1"></i>Feedback
+                </a>
+                <a href="#" class="footer-link" id="privacy-policy">
+                    <i class="fas fa-shield-alt mr-1"></i>Privacy
+                </a>
+            </div>
         </div>
     </footer>
 
+    <!-- Export Modal -->
+    <div id="export-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-export mr-2"></i>Export Data</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Format File</label>
+                    <select class="form-control">
+                        <option>CSV (Excel)</option>
+                        <option>PDF</option>
+                        <option>JSON</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Rentang Tanggal</label>
+                    <select class="form-control">
+                        <option>Semua Data</option>
+                        <option>Bulan Ini</option>
+                        <option>Minggu Ini</option>
+                        <option>Kustom</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-export">Batal</button>
+                <button class="btn btn-primary">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-comment-alt mr-2"></i>Kirim Feedback</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Email Anda</label>
+                    <input type="email" class="form-control" placeholder="nama@email.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pesan</label>
+                    <textarea class="form-control" rows="5" placeholder="Berikan feedback untuk perbaikan sistem..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Rating</label>
+                    <div style="display: flex; gap: 10px;">
+                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
+                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
+                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
+                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
+                        <i class="fas fa-star" style="color: #e2e8f0; cursor: pointer;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancel-feedback">Batal</button>
+                <button class="btn btn-primary">Kirim</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // PWA Variables
-        let deferredPrompt;
-        let isStandalone = false;
-
-        // Check if app is running in standalone mode
-        if (window.matchMedia('(display-mode: standalone)').matches || 
-            window.navigator.standalone === true) {
-            isStandalone = true;
-            console.log('App running in standalone mode');
-        }
-
-        // PWA Installation Handler
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
-            e.preventDefault();
-            // Stash the event so it can be triggered later
-            deferredPrompt = e;
-            
-            // Show install prompt after 5 seconds
-            setTimeout(() => {
-                if (!isStandalone && !localStorage.getItem('pwaInstallDismissed')) {
-                    showInstallPrompt();
-                }
-            }, 5000);
-            
-            // Update UI to notify the user they can add to home screen
-            showAddToHomeButton();
-        });
-
-        // Show install prompt
-        function showInstallPrompt() {
-            const prompt = document.getElementById('pwa-install-prompt');
-            prompt.classList.add('show');
-        }
-
-        // Hide install prompt
-        function hideInstallPrompt() {
-            const prompt = document.getElementById('pwa-install-prompt');
-            prompt.classList.remove('show');
-        }
-
-        // Show add to home button
-        function showAddToHomeButton() {
-            const button = document.getElementById('pwa-add-button');
-            button.classList.add('show');
-        }
-
-        // Hide add to home button
-        function hideAddToHomeButton() {
-            const button = document.getElementById('pwa-add-button');
-            button.classList.remove('show');
-        }
-
-        // Handle install button click
-        document.getElementById('pwa-install-btn').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                // Show the install prompt
-                deferredPrompt.prompt();
-                // Wait for the user to respond to the prompt
-                const { outcome } = await deferredPrompt.userChoice;
-                
-                if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                    hideInstallPrompt();
-                    hideAddToHomeButton();
-                } else {
-                    console.log('User dismissed the install prompt');
-                }
-                // Clear the saved prompt since it can't be used again
-                deferredPrompt = null;
-            }
-        });
-
-        // Handle install later button
-        document.getElementById('pwa-install-later').addEventListener('click', () => {
-            hideInstallPrompt();
-            localStorage.setItem('pwaInstallDismissed', 'true');
-        });
-
-        // Handle install close button
-        document.getElementById('pwa-install-close').addEventListener('click', () => {
-            hideInstallPrompt();
-            localStorage.setItem('pwaInstallDismissed', 'true');
-        });
-
-        // Handle add to home button click
-        document.getElementById('pwa-add-button').addEventListener('click', () => {
-            if (deferredPrompt) {
-                showInstallPrompt();
-            }
-        });
-
-        // Network status detection
-        window.addEventListener('online', () => {
-            document.getElementById('offline-indicator').classList.remove('show');
-        });
-
-        window.addEventListener('offline', () => {
-            document.getElementById('offline-indicator').classList.add('show');
-        });
-
-        // Check initial network status
-        if (!navigator.onLine) {
-            document.getElementById('offline-indicator').classList.add('show');
-        }
-
-        // Service Worker Registration for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }).catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
-
-        // Inisialisasi data awal dengan field breakTime
-        const initialData = [
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        // Data structure
+        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [
             { date: "11/12/2025", hours: "08.00–17.00", breakTime: 1, overtime: 0, totalHours: 8, note: "Ttd kontrak" },
             { date: "12/12/2025", hours: "07.00–16.00", breakTime: 1, overtime: 0, totalHours: 8, note: "Induction" },
             { date: "13/12/2025", hours: "07.00–16.00", breakTime: 1, overtime: 0, totalHours: 8, note: "Induction" },
             { date: "15/12/2025", hours: "19.00–06.00", breakTime: 1, overtime: 3.5, totalHours: 10.5, note: "Kerja lembur" },
             { date: "16/12/2025", hours: "18.00–08.00", breakTime: 1, overtime: 2.5, totalHours: 10.5, note: "" }
         ];
-
-        // Load data dari localStorage atau gunakan data awal
-        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || initialData;
         
-        // Default gaji bulanan (5.500.000)
         let monthlySalary = parseInt(localStorage.getItem('monthlySalary')) || 5500000;
+        let isEditMode = false;
+        let currentEditIndex = -1;
 
-        // Email developer
-        const developerEmail = "muhammadjamilalfaizs@gmail.com";
-
-        // Update tanggal dan waktu secara real-time
-        function updateDateTime() {
-            const now = new Date();
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', options);
-            
-            const timeOptions = { hour: '2-digit', minute: '2-digit' };
-            document.getElementById('current-time').textContent = now.toLocaleTimeString('id-ID', timeOptions);
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        function formatRupiah(amount) {
+            return 'Rp ' + amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
-
-        // Format tanggal ke format DD/MM/YYYY
+        
         function formatDate(dateString) {
             const date = new Date(dateString);
             const day = String(date.getDate()).padStart(2, '0');
@@ -1469,25 +1141,25 @@
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
         }
-
-        // Format jam kerja
+        
+        function parseDateForInput(dateString) {
+            const [day, month, year] = dateString.split('/').map(Number);
+            return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        }
+        
         function formatTime(startTime, endTime) {
             const start = startTime.replace(':', '.');
             const end = endTime.replace(':', '.');
             return `${start}–${end}`;
         }
-
-        // Format jam istirahat untuk display
-        function formatBreakTime(breakTime) {
-            if (breakTime === 0) return '-';
-            if (breakTime === 1) return '1 jam';
-            if (breakTime === 0.5) return '30 menit';
-            if (breakTime === 1.5) return '1.5 jam';
-            if (breakTime === 2) return '2 jam';
-            return `${breakTime} jam`;
+        
+        function parseTimeRange(timeString) {
+            const [start, end] = timeString.split('–');
+            const startTime = start.replace('.', ':');
+            const endTime = end.replace('.', ':');
+            return { startTime, endTime };
         }
-
-        // Hitung total jam dari waktu mulai dan selesai dengan dikurangi istirahat
+        
         function calculateHours(startTime, endTime, breakTime = 1) {
             const [startHour, startMinute] = startTime.split(':').map(Number);
             const [endHour, endMinute] = endTime.split(':').map(Number);
@@ -1495,768 +1167,449 @@
             let startTotalMinutes = startHour * 60 + startMinute;
             let endTotalMinutes = endHour * 60 + endMinute;
             
-            // Jika waktu selesai lebih kecil dari waktu mulai (melewati tengah malam)
             if (endTotalMinutes < startTotalMinutes) {
-                endTotalMinutes += 24 * 60; // Tambah 24 jam
+                endTotalMinutes += 24 * 60;
             }
             
             const totalMinutes = endTotalMinutes - startTotalMinutes;
             const hours = Math.floor(totalMinutes / 60);
             const minutes = totalMinutes % 60;
             
-            // Konversi ke desimal (0.5 untuk 30 menit)
             let totalHours = hours + (minutes / 60);
-            
-            // Kurangi waktu istirahat
             totalHours -= breakTime;
             
-            // Pastikan tidak negatif
             return totalHours < 0 ? 0 : totalHours;
         }
-
-        // Format angka ke format Rupiah
-        function formatRupiah(amount) {
-            return 'Rp ' + amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-
-        // Simpan data ke localStorage
+        
         function saveData() {
             localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+            localStorage.setItem('monthlySalary', monthlySalary);
         }
-
-        // Update tampilan gaji di halaman
-        function updateSalaryDisplay() {
-            // Update formula text
-            document.getElementById('formula-text').textContent = 
-                `${formatRupiah(monthlySalary)} : 173 x total jam kerja`;
+        
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = { day: 'numeric', month: 'short', year: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
             
-            // Update display gaji bulanan
-            document.getElementById('display-monthly-salary').textContent = 
-                formatRupiah(monthlySalary);
-            
-            // Update perhitungan
-            updateTotals();
+            document.getElementById('current-date').textContent = 
+                now.toLocaleDateString('id-ID', dateOptions);
+            document.getElementById('current-time').textContent = 
+                now.toLocaleTimeString('id-ID', timeOptions);
         }
-
-        // Tampilkan data ke dalam tabel
+        
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+        
         function renderTable() {
             const tbody = document.getElementById('attendance-data');
-            const emptyMessage = document.getElementById('empty-message');
-            const table = document.getElementById('attendance-table');
+            const emptyState = document.getElementById('empty-state');
             
             if (attendanceData.length === 0) {
                 tbody.innerHTML = '';
-                emptyMessage.style.display = 'block';
-                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                document.getElementById('attendance-table').style.display = 'none';
             } else {
-                emptyMessage.style.display = 'none';
-                table.style.display = 'table';
+                emptyState.style.display = 'none';
+                document.getElementById('attendance-table').style.display = 'table';
                 
                 tbody.innerHTML = attendanceData.map((item, index) => `
                     <tr>
-                        <td>${item.date}</td>
+                        <td><strong>${item.date}</strong></td>
                         <td>${item.hours}</td>
-                        <td>${formatBreakTime(item.breakTime)}</td>
-                        <td>${item.overtime === 0 ? '-' : item.overtime.toFixed(1).replace('.', ',')}</td>
-                        <td>${item.totalHours.toFixed(1)}</td>
-                        <td>${item.note}</td>
-                        <td><button class="delete-btn" data-index="${index}"><i class="fas fa-trash"></i> Hapus</button></td>
+                        <td>${item.breakTime === 0 ? '-' : item.breakTime + ' jam'}</td>
+                        <td>${item.overtime > 0 ? item.overtime + ' jam' : '-'}</td>
+                        <td><span class="status-badge badge-completed">${item.totalHours.toFixed(1)} jam</span></td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn btn-outline btn-sm edit-btn" data-index="${index}" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-outline btn-sm delete-btn" data-index="${index}" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 `).join('');
                 
-                // Tambahkan event listener untuk tombol hapus
+                // Add event listeners
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', () => editAttendance(parseInt(btn.dataset.index)));
+                });
+                
                 document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        attendanceData.splice(index, 1);
-                        saveData();
-                        renderTable();
-                    });
+                    btn.addEventListener('click', () => deleteAttendance(parseInt(btn.dataset.index)));
                 });
             }
             
-            updateTotals();
+            updateCalculations();
+            updateStats();
         }
-
-        // Hitung dan perbarui total jam kerja
-        function updateTotals() {
+        
+        function updateCalculations() {
+            let totalDays = attendanceData.length;
             let totalHours = 0;
-            let totalOvertime = 0;
-            let totalBreakTime = 0;
+            let overtimeHours = 0;
             
             attendanceData.forEach(item => {
-                totalHours += parseFloat(item.totalHours);
-                totalBreakTime += parseFloat(item.breakTime || 0);
-                if (item.overtime && item.overtime > 0) {
-                    totalOvertime += parseFloat(item.overtime);
-                }
+                totalHours += item.totalHours;
+                overtimeHours += item.overtime;
             });
             
-            // Tampilkan perhitungan gaji
-            document.getElementById('calc-total-hours').textContent = `${totalHours.toFixed(1)} jam`;
-            document.getElementById('calc-total-overtime').textContent = `${totalOvertime.toFixed(1)} jam`;
-            
-            // Hitung gaji per jam (monthlySalary / 173)
             const hourlyRate = monthlySalary / 173;
-            document.getElementById('hourly-rate').textContent = formatRupiah(hourlyRate);
-            
-            // Hitung perkiraan gaji
             const estimatedSalary = totalHours * hourlyRate;
-            document.getElementById('estimated-salary').textContent = formatRupiah(estimatedSalary);
+            
+            // Update calculation panel
+            document.getElementById('calc-total-days').textContent = totalDays;
+            document.getElementById('calc-total-hours').textContent = totalHours.toFixed(1);
+            document.getElementById('calc-overtime-hours').textContent = overtimeHours.toFixed(1);
+            document.getElementById('calc-hourly-rate').textContent = formatRupiah(hourlyRate);
+            document.getElementById('calc-total-salary').textContent = formatRupiah(estimatedSalary);
         }
-
-        // Fungsi untuk export data ke CSV
-        function exportToCSV(filename = 'rekap-kehadiran', includeSummary = true) {
-            if (attendanceData.length === 0) {
-                alert('Tidak ada data untuk diexport!');
-                return;
-            }
+        
+        function updateStats() {
+            let totalHours = 0;
+            let totalDays = attendanceData.length;
             
-            // Header CSV (ditambah kolom Istirahat)
-            let csvContent = "Tanggal,Jam Mulai-Selesai,Jam Istirahat,Jam Lembur,Total Jam,Keterangan\n";
-            
-            // Data CSV
             attendanceData.forEach(item => {
-                const breakTime = formatBreakTime(item.breakTime);
-                const overtime = item.overtime === 0 ? '-' : item.overtime.toFixed(1).replace('.', ',');
-                const note = item.note ? item.note.replace(/,/g, ';') : '';
-                
-                csvContent += `${item.date},${item.hours},${breakTime},${overtime},${item.totalHours.toFixed(1)},${note}\n`;
+                totalHours += item.totalHours;
             });
             
-            // Tambah ringkasan jika diperlukan
-            if (includeSummary) {
-                let totalHours = 0;
-                let totalOvertime = 0;
-                let totalBreakTime = 0;
-                
-                attendanceData.forEach(item => {
-                    totalHours += parseFloat(item.totalHours);
-                    totalBreakTime += parseFloat(item.breakTime || 0);
-                    if (item.overtime && item.overtime > 0) {
-                        totalOvertime += parseFloat(item.overtime);
-                    }
-                });
-                
-                const hourlyRate = monthlySalary / 173;
-                const estimatedSalary = totalHours * hourlyRate;
-                
-                csvContent += "\n\nRINGKASAN\n";
-                csvContent += `Gaji Bulanan,${formatRupiah(monthlySalary)}\n`;
-                csvContent += `Total Jam Kerja,${totalHours.toFixed(1)} jam\n`;
-                csvContent += `Total Jam Istirahat,${totalBreakTime.toFixed(1)} jam\n`;
-                csvContent += `Total Jam Lembur,${totalOvertime.toFixed(1)} jam\n`;
-                csvContent += `Gaji per Jam,${formatRupiah(hourlyRate)}\n`;
-                csvContent += `Perkiraan Gaji,${formatRupiah(estimatedSalary)}\n`;
-                csvContent += `Tanggal Export,${new Date().toLocaleDateString('id-ID')}\n`;
-            }
+            const hourlyRate = monthlySalary / 173;
+            const estimatedSalary = totalHours * hourlyRate;
             
-            // Buat blob dan download
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute("href", url);
-            link.setAttribute("download", `${filename}-${new Date().getTime()}.csv`);
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            alert(`Data berhasil diexport ke file ${filename}.csv`);
+            document.getElementById('stat-total-hours').textContent = totalHours.toFixed(1);
+            document.getElementById('stat-total-days').textContent = totalDays;
+            document.getElementById('stat-estimated-salary').textContent = formatRupiah(estimatedSalary);
         }
-
-        // Fungsi untuk filter data berdasarkan tanggal
-        function filterDataByDateRange(rangeType, startDate = null, endDate = null) {
-            if (rangeType === 'all') {
-                return attendanceData;
-            }
-            
-            const now = new Date();
-            let filteredData = [];
-            
-            if (rangeType === 'week') {
-                // Data 7 hari terakhir
-                const oneWeekAgo = new Date(now);
-                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-                
-                filteredData = attendanceData.filter(item => {
-                    const itemDate = parseDateString(item.date);
-                    return itemDate >= oneWeekAgo && itemDate <= now;
-                });
-            } else if (rangeType === 'month') {
-                // Data 30 hari terakhir
-                const oneMonthAgo = new Date(now);
-                oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
-                
-                filteredData = attendanceData.filter(item => {
-                    const itemDate = parseDateString(item.date);
-                    return itemDate >= oneMonthAgo && itemDate <= now;
-                });
-            } else if (rangeType === 'custom' && startDate && endDate) {
-                // Data custom range
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                
-                filteredData = attendanceData.filter(item => {
-                    const itemDate = parseDateString(item.date);
-                    return itemDate >= start && itemDate <= end;
-                });
-            }
-            
-            return filteredData;
-        }
-
-        // Parse date string dari format DD/MM/YYYY
-        function parseDateString(dateStr) {
-            const [day, month, year] = dateStr.split('/').map(Number);
-            return new Date(year, month - 1, day);
-        }
-
-        // Fungsi untuk mengirim feedback ke email developer
-        function sendFeedbackToDeveloper(feedbackData) {
-            // Format data untuk email
-            const subject = encodeURIComponent(feedbackData.subject);
-            const body = encodeURIComponent(
-                `Kategori: ${feedbackData.category}\n` +
-                `Nama: ${feedbackData.name || 'Tidak diisi'}\n` +
-                `Email: ${feedbackData.email || 'Tidak diisi'}\n` +
-                `Rating: ${feedbackData.rating}/5\n` +
-                `Tanggal: ${new Date().toLocaleDateString('id-ID')}\n` +
-                `\n--- PESAN ---\n${feedbackData.message}\n` +
-                `\n--- INFO APLIKASI ---\n` +
-                `Jumlah Data Kehadiran: ${attendanceData.length}\n` +
-                `Gaji yang Diatur: ${formatRupiah(monthlySalary)}\n` +
-                `Versi Aplikasi: 2.0\n` +
-                `User Agent: ${navigator.userAgent.substring(0, 100)}`
-            );
-            
-            // Buat link mailto
-            const mailtoLink = `mailto:${developerEmail}?subject=${subject}&body=${body}`;
-            
-            // Buka email client
-            window.location.href = mailtoLink;
-            
-            return true;
-        }
-
-        // Reset form feedback
-        function resetFeedbackForm() {
-            document.getElementById('feedback-name').value = '';
-            document.getElementById('feedback-email').value = '';
-            document.getElementById('feedback-subject').value = '';
-            document.getElementById('feedback-message').value = '';
-            document.getElementById('feedback-rating').value = '0';
-            document.getElementById('char-count').textContent = '0';
-            
-            // Reset rating stars
-            document.querySelectorAll('.star').forEach(star => {
-                star.classList.remove('active');
-            });
-            
-            // Reset kategori
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector('.category-btn[data-category="suggestion"]').classList.add('active');
-            
-            // Sembunyikan pesan
-            document.getElementById('feedback-success').style.display = 'none';
-            document.getElementById('feedback-error').style.display = 'none';
-        }
-
-        // Tambah data baru
-        document.getElementById('attendance-form').addEventListener('submit', function(e) {
+        
+        // ============================================
+        // ATTENDANCE MANAGEMENT
+        // ============================================
+        
+        function addAttendance(e) {
             e.preventDefault();
             
             const date = document.getElementById('date').value;
             const startTime = document.getElementById('start-time').value;
             const endTime = document.getElementById('end-time').value;
-            const breakTimeSelect = document.getElementById('break-time');
-            const breakTimeValue = breakTimeSelect.value;
-            const overtime = document.getElementById('overtime').value;
+            const breakTime = parseFloat(document.getElementById('break-time').value);
+            const overtime = parseFloat(document.getElementById('overtime').value) || 0;
             const note = document.getElementById('note').value;
             
-            // Validasi
             if (!date || !startTime || !endTime) {
-                alert('Harap isi tanggal, jam mulai, dan jam selesai!');
+                alert('Harap isi semua field yang diperlukan');
                 return;
             }
             
-            // Hitung jam istirahat
-            let breakTime = 0;
-            if (breakTimeValue === 'custom') {
-                const customBreakTime = parseFloat(document.getElementById('custom-break-time').value);
-                breakTime = isNaN(customBreakTime) ? 0 : customBreakTime;
-            } else {
-                breakTime = parseFloat(breakTimeValue);
-            }
-            
-            // Format data
             const formattedDate = formatDate(date);
             const formattedHours = formatTime(startTime, endTime);
-            
-            // Hitung total jam kerja (dikurangi istirahat)
             let totalHours = calculateHours(startTime, endTime, breakTime);
+            totalHours += overtime;
             
-            // Tambahkan jam lembur jika ada
-            let overtimeValue = 0;
-            if (overtime && parseFloat(overtime) > 0) {
-                overtimeValue = parseFloat(overtime);
-                totalHours += overtimeValue;
-            }
-            
-            // Tambahkan data ke array
-            attendanceData.push({
+            const attendance = {
                 date: formattedDate,
                 hours: formattedHours,
                 breakTime: breakTime,
-                overtime: overtimeValue,
+                overtime: overtime,
                 totalHours: totalHours,
                 note: note
-            });
-            
-            // Simpan dan render ulang
-            saveData();
-            renderTable();
-            
-            // Reset form
-            this.reset();
-            
-            // Set nilai default kembali
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
-            document.getElementById('start-time').value = '08:00';
-            document.getElementById('end-time').value = '17:00';
-            document.getElementById('break-time').value = '1';
-            
-            // Aktifkan preset tombol 1 jam
-            document.querySelectorAll('.break-preset-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-break') === '1') {
-                    btn.classList.add('active');
-                }
-            });
-            
-            // Tampilkan pesan sukses
-            alert('Data kehadiran berhasil ditambahkan!');
-        });
-
-        // Reset form
-        document.getElementById('reset-form').addEventListener('click', function() {
-            document.getElementById('attendance-form').reset();
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
-            document.getElementById('start-time').value = '08:00';
-            document.getElementById('end-time').value = '17:00';
-            document.getElementById('break-time').value = '1';
-            
-            // Sembunyikan custom break input
-            document.getElementById('custom-break-container').style.display = 'none';
-            
-            // Reset tombol preset
-            document.querySelectorAll('.break-preset-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-break') === '1') {
-                    btn.classList.add('active');
-                }
-            });
-        });
-
-        // Fungsi cetak
-        document.getElementById('print-btn').addEventListener('click', function() {
-            window.print();
-        });
-
-        // Export CSV dengan modal
-        document.getElementById('export-csv-btn').addEventListener('click', function() {
-            document.getElementById('export-modal').style.display = 'block';
-        });
-
-        document.getElementById('export-csv').addEventListener('click', function() {
-            document.getElementById('export-modal').style.display = 'block';
-        });
-
-        // Export PDF (simulasi)
-        document.getElementById('export-pdf').addEventListener('click', function() {
-            alert('Fitur Export PDF akan segera hadir!');
-        });
-
-        // Export Excel (simulasi)
-        document.getElementById('export-excel').addEventListener('click', function() {
-            alert('Fitur Export Excel akan segera hadir!');
-        });
-
-        // Export Print (simulasi)
-        document.getElementById('export-print').addEventListener('click', function() {
-            window.print();
-        });
-
-        // Reset semua data
-        document.getElementById('reset-all-btn').addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus semua data? Tindakan ini tidak dapat dibatalkan.')) {
-                attendanceData = [];
-                saveData();
-                renderTable();
-                alert('Semua data kehadiran telah dihapus!');
-            }
-        });
-
-        // Toggle form edit gaji
-        document.getElementById('edit-salary-btn').addEventListener('click', function() {
-            const salaryInputContainer = document.getElementById('salary-input-container');
-            const isVisible = salaryInputContainer.style.display === 'block';
-            
-            salaryInputContainer.style.display = isVisible ? 'none' : 'block';
-            
-            if (!isVisible) {
-                // Set nilai input saat form dibuka
-                document.getElementById('monthly-salary').value = monthlySalary;
-                document.getElementById('monthly-salary').focus();
-            }
-        });
-
-        // Simpan gaji baru
-        document.getElementById('save-salary-btn').addEventListener('click', function() {
-            const salaryInput = document.getElementById('monthly-salary');
-            const newSalary = parseInt(salaryInput.value);
-            
-            if (!newSalary || newSalary < 100000) {
-                alert('Harap masukkan gaji yang valid (minimal Rp 100.000)');
-                salaryInput.focus();
-                return;
-            }
-            
-            // Simpan gaji baru
-            monthlySalary = newSalary;
-            localStorage.setItem('monthlySalary', monthlySalary);
-            
-            // Update tampilan
-            updateSalaryDisplay();
-            
-            // Sembunyikan form input
-            document.getElementById('salary-input-container').style.display = 'none';
-            
-            // Tampilkan pesan sukses
-            alert(`Gaji berhasil diubah menjadi ${formatRupiah(monthlySalary)}`);
-        });
-
-        // Tombol preset gaji
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const salary = parseInt(this.getAttribute('data-salary'));
-                monthlySalary = salary;
-                localStorage.setItem('monthlySalary', monthlySalary);
-                
-                // Update tampilan
-                updateSalaryDisplay();
-                
-                // Sembunyikan form input
-                document.getElementById('salary-input-container').style.display = 'none';
-                
-                // Tampilkan pesan
-                alert(`Gaji berhasil diubah menjadi ${formatRupiah(monthlySalary)}`);
-            });
-        });
-
-        // Tombol preset istirahat
-        document.querySelectorAll('.break-preset-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const breakTime = this.getAttribute('data-break');
-                
-                // Update select box
-                document.getElementById('break-time').value = breakTime;
-                
-                // Update tombol aktif
-                document.querySelectorAll('.break-preset-btn').forEach(b => {
-                    b.classList.remove('active');
-                });
-                this.classList.add('active');
-                
-                // Sembunyikan custom input jika bukan custom
-                if (breakTime !== 'custom') {
-                    document.getElementById('custom-break-container').style.display = 'none';
-                }
-            });
-        });
-
-        // Handle perubahan pada select box istirahat
-        document.getElementById('break-time').addEventListener('change', function() {
-            if (this.value === 'custom') {
-                document.getElementById('custom-break-container').style.display = 'block';
-                
-                // Update tombol preset
-                document.querySelectorAll('.break-preset-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-            } else {
-                document.getElementById('custom-break-container').style.display = 'none';
-                
-                // Update tombol preset
-                const breakTime = this.value;
-                document.querySelectorAll('.break-preset-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.getAttribute('data-break') === breakTime) {
-                        btn.classList.add('active');
-                    }
-                });
-            }
-        });
-
-        // Modal functionality
-        const exportModal = document.getElementById('export-modal');
-        const feedbackModal = document.getElementById('feedback-modal');
-        const closeModalBtns = document.querySelectorAll('.close-modal');
-        const cancelExportBtn = document.getElementById('cancel-export');
-        const confirmExportBtn = document.getElementById('confirm-export-csv');
-        const exportDateRange = document.getElementById('export-date-range');
-        const customDateRange = document.getElementById('custom-date-range');
-
-        // Tampilkan/sembunyikan custom date range
-        exportDateRange.addEventListener('change', function() {
-            if (this.value === 'custom') {
-                customDateRange.style.display = 'block';
-                
-                // Set default tanggal
-                const today = new Date().toISOString().split('T')[0];
-                const oneWeekAgo = new Date();
-                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-                const oneWeekAgoStr = oneWeekAgo.toISOString().split('T')[0];
-                
-                document.getElementById('export-start-date').value = oneWeekAgoStr;
-                document.getElementById('export-end-date').value = today;
-            } else {
-                customDateRange.style.display = 'none';
-            }
-        });
-
-        // Tutup modal
-        closeModalBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const modal = this.closest('.modal');
-                modal.style.display = 'none';
-            });
-        });
-
-        cancelExportBtn.addEventListener('click', function() {
-            exportModal.style.display = 'none';
-        });
-
-        // Export konfirmasi
-        confirmExportBtn.addEventListener('click', function() {
-            const filename = document.getElementById('export-filename').value || 'rekap-kehadiran';
-            const dateRange = exportDateRange.value;
-            const includeSummary = document.getElementById('include-summary').checked;
-            let filteredData = attendanceData;
-            
-            if (dateRange === 'custom') {
-                const startDate = document.getElementById('export-start-date').value;
-                const endDate = document.getElementById('export-end-date').value;
-                
-                if (!startDate || !endDate) {
-                    alert('Harap isi tanggal mulai dan tanggal akhir!');
-                    return;
-                }
-                
-                filteredData = filterDataByDateRange('custom', startDate, endDate);
-            } else if (dateRange !== 'all') {
-                filteredData = filterDataByDateRange(dateRange);
-            }
-            
-            // Buat temporary array untuk export
-            const exportData = filteredData;
-            
-            if (exportData.length === 0) {
-                alert('Tidak ada data dalam rentang tanggal yang dipilih!');
-                return;
-            }
-            
-            // Export ke CSV
-            exportToCSV(filename, includeSummary);
-            exportModal.style.display = 'none';
-        });
-
-        // Feedback functionality
-        document.getElementById('feedback-btn').addEventListener('click', function() {
-            document.getElementById('feedback-modal').style.display = 'block';
-        });
-
-        document.getElementById('send-feedback-btn').addEventListener('click', function() {
-            document.getElementById('feedback-modal').style.display = 'block';
-        });
-
-        document.getElementById('report-bug-btn').addEventListener('click', function() {
-            document.getElementById('feedback-modal').style.display = 'block';
-            document.getElementById('feedback-subject').value = 'Laporan Bug - Aplikasi Rekap Kehadiran';
-            document.querySelector('.category-btn[data-category="bug"]').click();
-        });
-
-        document.getElementById('suggest-feature-btn').addEventListener('click', function() {
-            document.getElementById('feedback-modal').style.display = 'block';
-            document.getElementById('feedback-subject').value = 'Saran Fitur - Aplikasi Rekap Kehadiran';
-            document.querySelector('.category-btn[data-category="feature"]').click();
-        });
-
-        document.getElementById('footer-feedback').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('feedback-modal').style.display = 'block';
-        });
-
-        document.getElementById('footer-bug').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('feedback-modal').style.display = 'block';
-            document.getElementById('feedback-subject').value = 'Laporan Bug - Aplikasi Rekap Kehadiran';
-            document.querySelector('.category-btn[data-category="bug"]').click();
-        });
-
-        // Feedback category selection
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.category-btn').forEach(b => {
-                    b.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-
-        // Star rating
-        document.querySelectorAll('.star').forEach(star => {
-            star.addEventListener('click', function() {
-                const value = parseInt(this.getAttribute('data-value'));
-                document.getElementById('feedback-rating').value = value;
-                
-                document.querySelectorAll('.star').forEach(s => {
-                    const starValue = parseInt(s.getAttribute('data-value'));
-                    if (starValue <= value) {
-                        s.classList.add('active');
-                    } else {
-                        s.classList.remove('active');
-                    }
-                });
-            });
-            
-            star.addEventListener('mouseover', function() {
-                const value = parseInt(this.getAttribute('data-value'));
-                document.querySelectorAll('.star').forEach(s => {
-                    const starValue = parseInt(s.getAttribute('data-value'));
-                    if (starValue <= value) {
-                        s.style.color = '#f39c12';
-                    } else {
-                        s.style.color = '#ddd';
-                    }
-                });
-            });
-            
-            star.addEventListener('mouseout', function() {
-                const currentRating = parseInt(document.getElementById('feedback-rating').value);
-                document.querySelectorAll('.star').forEach(s => {
-                    const starValue = parseInt(s.getAttribute('data-value'));
-                    if (starValue <= currentRating) {
-                        s.style.color = '#f39c12';
-                    } else {
-                        s.style.color = '#ddd';
-                    }
-                });
-            });
-        });
-
-        // Character count for feedback message
-        document.getElementById('feedback-message').addEventListener('input', function() {
-            const count = this.value.length;
-            document.getElementById('char-count').textContent = count;
-            
-            if (count > 1000) {
-                this.value = this.value.substring(0, 1000);
-                document.getElementById('char-count').textContent = 1000;
-                document.getElementById('char-count').style.color = '#e74c3c';
-            } else if (count > 900) {
-                document.getElementById('char-count').style.color = '#f39c12';
-            } else {
-                document.getElementById('char-count').style.color = '#7f8c8d';
-            }
-        });
-
-        // Send feedback
-        document.getElementById('send-feedback').addEventListener('click', function() {
-            const category = document.querySelector('.category-btn.active').getAttribute('data-category');
-            const name = document.getElementById('feedback-name').value.trim();
-            const email = document.getElementById('feedback-email').value.trim();
-            const subject = document.getElementById('feedback-subject').value.trim();
-            const message = document.getElementById('feedback-message').value.trim();
-            const rating = document.getElementById('feedback-rating').value;
-            
-            // Validation
-            if (!subject) {
-                alert('Harap isi subjek!');
-                document.getElementById('feedback-subject').focus();
-                return;
-            }
-            
-            if (!message) {
-                alert('Harap isi pesan!');
-                document.getElementById('feedback-message').focus();
-                return;
-            }
-            
-            // Prepare feedback data
-            const feedbackData = {
-                category: category,
-                name: name,
-                email: email,
-                subject: subject,
-                message: message,
-                rating: rating
             };
             
-            // Send feedback
-            const success = sendFeedbackToDeveloper(feedbackData);
+            attendanceData.push(attendance);
+            saveData();
+            renderTable();
+            resetForm();
             
-            if (success) {
-                document.getElementById('feedback-success').style.display = 'block';
-                document.getElementById('feedback-error').style.display = 'none';
-                
-                // Reset form after 2 seconds
-                setTimeout(() => {
-                    resetFeedbackForm();
-                    document.getElementById('feedback-modal').style.display = 'none';
-                }, 2000);
-            } else {
-                document.getElementById('feedback-error').style.display = 'block';
-                document.getElementById('error-text').textContent = 'Gagal mengirim feedback. Silakan coba lagi.';
+            // Show success feedback
+            showToast('Data kehadiran berhasil ditambahkan', 'success');
+        }
+        
+        function editAttendance(index) {
+            if (index < 0 || index >= attendanceData.length) return;
+            
+            const data = attendanceData[index];
+            const dateInput = parseDateForInput(data.date);
+            const timeRange = parseTimeRange(data.hours);
+            
+            document.getElementById('date').value = dateInput;
+            document.getElementById('start-time').value = timeRange.startTime;
+            document.getElementById('end-time').value = timeRange.endTime;
+            document.getElementById('break-time').value = data.breakTime;
+            document.getElementById('overtime').value = data.overtime || '';
+            document.getElementById('note').value = data.note || '';
+            document.getElementById('edit-index').value = index;
+            
+            activateEditMode(index);
+        }
+        
+        function updateAttendance() {
+            const index = parseInt(document.getElementById('edit-index').value);
+            
+            if (index < 0 || index >= attendanceData.length) {
+                showToast('Data tidak ditemukan', 'error');
+                return;
             }
-        });
-
-        // Cancel feedback
-        document.getElementById('cancel-feedback').addEventListener('click', function() {
-            document.getElementById('feedback-modal').style.display = 'none';
-            resetFeedbackForm();
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set default date and time
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
+            
+            const date = document.getElementById('date').value;
+            const startTime = document.getElementById('start-time').value;
+            const endTime = document.getElementById('end-time').value;
+            const breakTime = parseFloat(document.getElementById('break-time').value);
+            const overtime = parseFloat(document.getElementById('overtime').value) || 0;
+            const note = document.getElementById('note').value;
+            
+            const formattedDate = formatDate(date);
+            const formattedHours = formatTime(startTime, endTime);
+            let totalHours = calculateHours(startTime, endTime, breakTime);
+            totalHours += overtime;
+            
+            attendanceData[index] = {
+                date: formattedDate,
+                hours: formattedHours,
+                breakTime: breakTime,
+                overtime: overtime,
+                totalHours: totalHours,
+                note: note
+            };
+            
+            saveData();
+            renderTable();
+            deactivateEditMode();
+            
+            showToast('Data berhasil diperbarui', 'success');
+        }
+        
+        function deleteAttendance(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                attendanceData.splice(index, 1);
+                saveData();
+                renderTable();
+                
+                if (isEditMode && currentEditIndex === index) {
+                    deactivateEditMode();
+                }
+                
+                showToast('Data berhasil dihapus', 'success');
+            }
+        }
+        
+        function activateEditMode(index) {
+            isEditMode = true;
+            currentEditIndex = index;
+            
+            document.getElementById('edit-notice').classList.add('show');
+            document.getElementById('form-section').classList.add('edit-mode');
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('update-btn').style.display = 'flex';
+            document.getElementById('cancel-edit').style.display = 'flex';
+        }
+        
+        function deactivateEditMode() {
+            isEditMode = false;
+            currentEditIndex = -1;
+            
+            document.getElementById('edit-notice').classList.remove('show');
+            document.getElementById('form-section').classList.remove('edit-mode');
+            document.getElementById('submit-btn').style.display = 'flex';
+            document.getElementById('update-btn').style.display = 'none';
+            document.getElementById('cancel-edit').style.display = 'none';
+            document.getElementById('edit-index').value = '-1';
+            
+            resetForm();
+        }
+        
+        function resetForm() {
+            document.getElementById('attendance-form').reset();
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
             document.getElementById('start-time').value = '08:00';
             document.getElementById('end-time').value = '17:00';
+            document.getElementById('break-time').value = '1';
+        }
+        
+        // ============================================
+        // SALARY MANAGEMENT
+        // ============================================
+        
+        function updateSalary() {
+            const newSalary = parseInt(document.getElementById('monthly-salary').value);
             
-            // Update date and time every second
+            if (!newSalary || newSalary < 1000000) {
+                showToast('Masukkan gaji yang valid (minimal Rp 1,000,000)', 'error');
+                return;
+            }
+            
+            monthlySalary = newSalary;
+            saveData();
+            updateCalculations();
+            updateStats();
+            
+            showToast(`Gaji berhasil diupdate menjadi ${formatRupiah(monthlySalary)}`, 'success');
+        }
+        
+        // ============================================
+        // UI HELPERS
+        // ============================================
+        
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>
+                ${message}
+            `;
+            
+            // Style toast
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#38a169' : '#e53e3e'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                animation: slideInRight 0.3s ease;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // ============================================
+        // PWA FUNCTIONALITY
+        // ============================================
+        
+        function generateManifest() {
+            const manifest = {
+                "name": "HR Attendance System",
+                "short_name": "Attendance",
+                "description": "Professional Attendance Management System",
+                "start_url": ".",
+                "display": "standalone",
+                "background_color": "#1a365d",
+                "theme_color": "#1a365d",
+                "icons": [
+                    {
+                        "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233182ce%22>📊</text></svg>",
+                        "sizes": "192x192",
+                        "type": "image/svg+xml"
+                    }
+                ]
+            };
+            
+            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            document.getElementById('app-manifest').href = manifestURL;
+        }
+        
+        async function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('sw.js', {
+                        scope: './',
+                        updateViaCache: 'none'
+                    });
+                    console.log('Service Worker registered');
+                    return registration;
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
+                }
+            }
+        }
+        
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize
+            generateManifest();
+            await registerServiceWorker();
+            
+            // Set default date
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            
+            // Initial render
+            renderTable();
             updateDateTime();
             setInterval(updateDateTime, 1000);
             
-            // Initialize table
-            renderTable();
-            updateSalaryDisplay();
+            // Hide splash screen
+            setTimeout(() => {
+                document.getElementById('pwa-splash').classList.add('hidden');
+            }, 1500);
             
-            // PWA - Check if app is installed
-            if (isStandalone) {
-                console.log('App is running as standalone PWA');
-                hideAddToHomeButton();
-            }
+            // Form submission
+            document.getElementById('attendance-form').addEventListener('submit', addAttendance);
+            document.getElementById('update-btn').addEventListener('click', updateAttendance);
+            document.getElementById('cancel-edit').addEventListener('click', deactivateEditMode);
+            document.getElementById('add-first-data').addEventListener('click', () => {
+                document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Salary configuration
+            document.getElementById('save-salary').addEventListener('click', updateSalary);
+            document.querySelectorAll('.preset-buttons button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const salary = parseInt(this.dataset.salary);
+                    document.getElementById('monthly-salary').value = salary;
+                    updateSalary();
+                });
+            });
+            
+            // Export/Print
+            document.getElementById('export-data').addEventListener('click', () => {
+                document.getElementById('export-modal').style.display = 'flex';
+            });
+            
+            document.getElementById('print-data').addEventListener('click', () => {
+                window.print();
+            });
+            
+            // Modal controls
+            document.querySelectorAll('.close-modal, .btn-outline').forEach(btn => {
+                if (btn.id === 'cancel-export' || btn.id === 'cancel-feedback') {
+                    btn.addEventListener('click', function() {
+                        this.closest('.modal').style.display = 'none';
+                    });
+                }
+            });
+            
+            // Feedback
+            document.getElementById('send-feedback').addEventListener('click', () => {
+                document.getElementById('feedback-modal').style.display = 'flex';
+            });
+            
+            // Mobile navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Network detection
+            window.addEventListener('online', () => {
+                document.getElementById('offline-indicator').style.display = 'none';
+            });
+            
+            window.addEventListener('offline', () => {
+                document.getElementById('offline-indicator').style.display = 'flex';
+            });
         });
-
-        // Close modal when clicking outside
+        
+        // Close modals on outside click
         window.addEventListener('click', function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
