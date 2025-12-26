@@ -775,6 +775,88 @@
                 color: black;
             }
         }
+
+        /* ===== EXPORT OPTIONS ===== */
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .export-option {
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .export-option:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .export-option.selected {
+            border-color: var(--accent);
+            background: #ebf8ff;
+        }
+
+        .export-option i {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .export-option .format-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .export-option .format-desc {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        .toast.info {
+            background: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -931,7 +1013,7 @@
                     <h2><i class="fas fa-history mr-2"></i>Riwayat Kehadiran</h2>
                     <div>
                         <button id="export-data" class="btn btn-outline btn-sm">
-                            <i class="fas fa-download mr-2"></i>Export
+                            <i class="fas fa-download mr-2"></i>Export Data
                         </button>
                         <button id="print-data" class="btn btn-outline btn-sm">
                             <i class="fas fa-print mr-2"></i>Print
@@ -948,6 +1030,7 @@
                                 <th>Istirahat</th>
                                 <th>Lembur</th>
                                 <th>Total</th>
+                                <th>Catatan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -1045,31 +1128,76 @@
     <div id="export-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-file-export mr-2"></i>Export Data</h3>
+                <h3><i class="fas fa-file-export mr-2"></i>Export Data Kehadiran</h3>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Format File</label>
-                    <select class="form-control">
-                        <option>CSV (Excel)</option>
-                        <option>PDF</option>
-                        <option>JSON</option>
+                <div class="form-group mb-3">
+                    <label class="form-label">Pilih Format Export</label>
+                    <div class="export-options">
+                        <div class="export-option" data-format="csv">
+                            <i class="fas fa-file-csv"></i>
+                            <div class="format-name">CSV (Excel)</div>
+                            <div class="format-desc">Format spreadsheet untuk Excel/LibreOffice</div>
+                        </div>
+                        <div class="export-option" data-format="json">
+                            <i class="fas fa-file-code"></i>
+                            <div class="format-name">JSON</div>
+                            <div class="format-desc">Format data untuk backup dan integrasi</div>
+                        </div>
+                        <div class="export-option" data-format="txt">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="format-name">Teks</div>
+                            <div class="format-desc">Format teks sederhana untuk print</div>
+                        </div>
+                        <div class="export-option" data-format="pdf">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="format-name">PDF</div>
+                            <div class="format-desc">Format dokumen untuk laporan resmi</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label class="form-label">Nama File</label>
+                    <input type="text" id="export-filename" class="form-control" value="kehadiran-data">
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label class="form-label">Rentang Tanggal</label>
+                    <select id="export-range" class="form-control">
+                        <option value="all">Semua Data</option>
+                        <option value="month">Bulan Ini</option>
+                        <option value="week">Minggu Ini</option>
+                        <option value="custom">Kustom</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Rentang Tanggal</label>
-                    <select class="form-control">
-                        <option>Semua Data</option>
-                        <option>Bulan Ini</option>
-                        <option>Minggu Ini</option>
-                        <option>Kustom</option>
-                    </select>
+                
+                <div id="custom-date-range" style="display: none;">
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div class="form-group">
+                            <label class="form-label">Dari Tanggal</label>
+                            <input type="date" id="export-start-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sampai Tanggal</label>
+                            <input type="date" id="export-end-date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label class="form-label" style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="include-summary" checked>
+                        <span>Sertakan ringkasan gaji</span>
+                    </label>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" id="cancel-export">Batal</button>
-                <button class="btn btn-primary">Download</button>
+                <button class="btn btn-primary" id="confirm-export">
+                    <i class="fas fa-download mr-2"></i>Download
+                </button>
             </div>
         </div>
     </div>
@@ -1197,6 +1325,331 @@
                 now.toLocaleTimeString('id-ID', timeOptions);
         }
         
+        function showToast(message, type = 'info') {
+            // Hapus toast sebelumnya
+            document.querySelectorAll('.toast').forEach(toast => toast.remove());
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ============================================
+        // EXPORT FUNCTIONS - FIXED TO WORK
+        // ============================================
+        
+        function exportToCSV(data, filename = 'kehadiran.csv') {
+            try {
+                // Filter data berdasarkan rentang tanggal
+                const filteredData = filterDataByRange(data);
+                
+                if (filteredData.length === 0) {
+                    showToast('Tidak ada data untuk diexport', 'error');
+                    return;
+                }
+                
+                // Buat header CSV
+                let csvContent = "Tanggal,Jam Kerja,Jam Istirahat,Jam Lembur,Total Jam,Catatan\n";
+                
+                // Tambahkan data
+                filteredData.forEach(item => {
+                    const row = [
+                        `"${item.date}"`,
+                        `"${item.hours}"`,
+                        item.breakTime,
+                        item.overtime,
+                        item.totalHours.toFixed(1),
+                        `"${item.note || ''}"`
+                    ];
+                    csvContent += row.join(',') + '\n';
+                });
+                
+                // Tambahkan summary jika dipilih
+                if (document.getElementById('include-summary').checked) {
+                    const summary = generateSummary(filteredData);
+                    csvContent += '\n\nRINGKASAN\n';
+                    csvContent += `Total Hari Kerja,${summary.totalDays}\n`;
+                    csvContent += `Total Jam Kerja,${summary.totalHours.toFixed(1)}\n`;
+                    csvContent += `Total Jam Lembur,${summary.totalOvertime.toFixed(1)}\n`;
+                    csvContent += `Gaji per Jam,${formatRupiah(summary.hourlyRate)}\n`;
+                    csvContent += `Estimasi Gaji,${formatRupiah(summary.estimatedSalary)}\n`;
+                }
+                
+                // Buat blob dan download
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                
+                // Cleanup
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showToast(`Data berhasil diexport ke ${filename}`, 'success');
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showToast('Terjadi kesalahan saat export', 'error');
+            }
+        }
+        
+        function exportToJSON(data, filename = 'kehadiran.json') {
+            try {
+                const filteredData = filterDataByRange(data);
+                
+                if (filteredData.length === 0) {
+                    showToast('Tidak ada data untuk diexport', 'error');
+                    return;
+                }
+                
+                const exportData = {
+                    metadata: {
+                        exported: new Date().toISOString(),
+                        totalRecords: filteredData.length,
+                        salaryConfiguration: {
+                            monthlySalary: monthlySalary,
+                            hourlyRate: monthlySalary / 173
+                        }
+                    },
+                    data: filteredData,
+                    summary: document.getElementById('include-summary').checked ? 
+                        generateSummary(filteredData) : null
+                };
+                
+                const jsonString = JSON.stringify(exportData, null, 2);
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showToast(`Data berhasil diexport ke ${filename}`, 'success');
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showToast('Terjadi kesalahan saat export', 'error');
+            }
+        }
+        
+        function exportToTXT(data, filename = 'kehadiran.txt') {
+            try {
+                const filteredData = filterDataByRange(data);
+                
+                if (filteredData.length === 0) {
+                    showToast('Tidak ada data untuk diexport', 'error');
+                    return;
+                }
+                
+                let txtContent = 'REKAP KEHADIRAN KERJA\n';
+                txtContent += '='.repeat(50) + '\n\n';
+                
+                // Tambahkan header
+                txtContent += 'Tanggal'.padEnd(12) + 
+                            'Jam Kerja'.padEnd(15) + 
+                            'Istirahat'.padEnd(10) + 
+                            'Lembur'.padEnd(10) + 
+                            'Total'.padEnd(10) + 
+                            'Catatan\n';
+                txtContent += '-'.repeat(70) + '\n';
+                
+                // Tambahkan data
+                filteredData.forEach(item => {
+                    txtContent += 
+                        item.date.padEnd(12) +
+                        item.hours.padEnd(15) +
+                        `${item.breakTime} jam`.padEnd(10) +
+                        `${item.overtime} jam`.padEnd(10) +
+                        `${item.totalHours.toFixed(1)} jam`.padEnd(10) +
+                        (item.note || '') + '\n';
+                });
+                
+                // Tambahkan summary jika dipilih
+                if (document.getElementById('include-summary').checked) {
+                    const summary = generateSummary(filteredData);
+                    txtContent += '\n' + '='.repeat(50) + '\n';
+                    txtContent += 'RINGKASAN\n';
+                    txtContent += '='.repeat(50) + '\n';
+                    txtContent += `Total Hari Kerja: ${summary.totalDays}\n`;
+                    txtContent += `Total Jam Kerja: ${summary.totalHours.toFixed(1)} jam\n`;
+                    txtContent += `Total Jam Lembur: ${summary.totalOvertime.toFixed(1)} jam\n`;
+                    txtContent += `Gaji per Jam: ${formatRupiah(summary.hourlyRate)}\n`;
+                    txtContent += `Estimasi Gaji: ${formatRupiah(summary.estimatedSalary)}\n`;
+                }
+                
+                txtContent += '\n' + '='.repeat(50) + '\n';
+                txtContent += `Dicetak pada: ${new Date().toLocaleString('id-ID')}\n`;
+                
+                const blob = new Blob([txtContent], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showToast(`Data berhasil diexport ke ${filename}`, 'success');
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showToast('Terjadi kesalahan saat export', 'error');
+            }
+        }
+        
+        function exportToPDF(data, filename = 'kehadiran.pdf') {
+            try {
+                // Simulasi PDF export karena pembuatan PDF yang sebenarnya memerlukan library
+                showToast('Fitur PDF akan segera tersedia. Untuk saat ini gunakan format CSV atau TXT.', 'info');
+                
+                // Fallback ke TXT jika PDF tidak tersedia
+                setTimeout(() => {
+                    exportToTXT(data, filename.replace('.pdf', '.txt'));
+                }, 1500);
+                
+            } catch (error) {
+                console.error('PDF export error:', error);
+                showToast('Terjadi kesalahan saat export PDF', 'error');
+            }
+        }
+        
+        function filterDataByRange(data) {
+            const range = document.getElementById('export-range').value;
+            
+            if (range === 'all') {
+                return data;
+            }
+            
+            const now = new Date();
+            let startDate, endDate;
+            
+            if (range === 'month') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            } else if (range === 'week') {
+                const day = now.getDay();
+                const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+                startDate = new Date(now.setDate(diff));
+                startDate.setHours(0, 0, 0, 0);
+                endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + 6);
+            } else if (range === 'custom') {
+                const startInput = document.getElementById('export-start-date').value;
+                const endInput = document.getElementById('export-end-date').value;
+                
+                if (!startInput || !endInput) {
+                    showToast('Harap pilih rentang tanggal yang valid', 'error');
+                    return data;
+                }
+                
+                startDate = new Date(startInput);
+                endDate = new Date(endInput);
+            }
+            
+            return data.filter(item => {
+                const [day, month, year] = item.date.split('/').map(Number);
+                const itemDate = new Date(year, month - 1, day);
+                return itemDate >= startDate && itemDate <= endDate;
+            });
+        }
+        
+        function generateSummary(data) {
+            let totalDays = data.length;
+            let totalHours = 0;
+            let totalOvertime = 0;
+            
+            data.forEach(item => {
+                totalHours += item.totalHours;
+                totalOvertime += item.overtime;
+            });
+            
+            const hourlyRate = monthlySalary / 173;
+            const estimatedSalary = totalHours * hourlyRate;
+            
+            return {
+                totalDays,
+                totalHours,
+                totalOvertime,
+                hourlyRate,
+                estimatedSalary
+            };
+        }
+        
+        function handleExport() {
+            const selectedFormat = document.querySelector('.export-option.selected')?.dataset.format || 'csv';
+            let filename = document.getElementById('export-filename').value.trim();
+            
+            if (!filename) {
+                filename = 'kehadiran-data';
+            }
+            
+            // Tambahkan ekstensi file
+            const extensions = {
+                csv: '.csv',
+                json: '.json',
+                txt: '.txt',
+                pdf: '.pdf'
+            };
+            
+            if (!filename.toLowerCase().endsWith(extensions[selectedFormat])) {
+                filename += extensions[selectedFormat];
+            }
+            
+            // Panggil fungsi export sesuai format
+            switch(selectedFormat) {
+                case 'csv':
+                    exportToCSV(attendanceData, filename);
+                    break;
+                case 'json':
+                    exportToJSON(attendanceData, filename);
+                    break;
+                case 'txt':
+                    exportToTXT(attendanceData, filename);
+                    break;
+                case 'pdf':
+                    exportToPDF(attendanceData, filename);
+                    break;
+                default:
+                    exportToCSV(attendanceData, filename);
+            }
+            
+            // Tutup modal
+            document.getElementById('export-modal').style.display = 'none';
+        }
+
         // ============================================
         // RENDER FUNCTIONS
         // ============================================
@@ -1220,6 +1673,7 @@
                         <td>${item.breakTime === 0 ? '-' : item.breakTime + ' jam'}</td>
                         <td>${item.overtime > 0 ? item.overtime + ' jam' : '-'}</td>
                         <td><span class="status-badge badge-completed">${item.totalHours.toFixed(1)} jam</span></td>
+                        <td>${item.note || '-'}</td>
                         <td>
                             <div style="display: flex; gap: 5px;">
                                 <button class="btn btn-outline btn-sm edit-btn" data-index="${index}" title="Edit">
@@ -1448,93 +1902,12 @@
         }
         
         // ============================================
-        // UI HELPERS
-        // ============================================
-        
-        function showToast(message, type = 'info') {
-            // Create toast element
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>
-                ${message}
-            `;
-            
-            // Style toast
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#38a169' : '#e53e3e'};
-                color: white;
-                padding: 12px 20px;
-                border-radius: var(--radius);
-                box-shadow: var(--shadow-lg);
-                z-index: 1000;
-                display: flex;
-                align-items: center;
-                animation: slideInRight 0.3s ease;
-            `;
-            
-            document.body.appendChild(toast);
-            
-            // Remove toast after 3 seconds
-            setTimeout(() => {
-                toast.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-        
-        // ============================================
-        // PWA FUNCTIONALITY
-        // ============================================
-        
-        function generateManifest() {
-            const manifest = {
-                "name": "HR Attendance System",
-                "short_name": "Attendance",
-                "description": "Professional Attendance Management System",
-                "start_url": ".",
-                "display": "standalone",
-                "background_color": "#1a365d",
-                "theme_color": "#1a365d",
-                "icons": [
-                    {
-                        "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233182ce%22>📊</text></svg>",
-                        "sizes": "192x192",
-                        "type": "image/svg+xml"
-                    }
-                ]
-            };
-            
-            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-            const manifestURL = URL.createObjectURL(manifestBlob);
-            document.getElementById('app-manifest').href = manifestURL;
-        }
-        
-        async function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                try {
-                    const registration = await navigator.serviceWorker.register('sw.js', {
-                        scope: './',
-                        updateViaCache: 'none'
-                    });
-                    console.log('Service Worker registered');
-                    return registration;
-                } catch (error) {
-                    console.error('Service Worker registration failed:', error);
-                }
-            }
-        }
-        
-        // ============================================
         // EVENT LISTENERS
         // ============================================
         
         document.addEventListener('DOMContentLoaded', async function() {
             // Initialize
             generateManifest();
-            await registerServiceWorker();
             
             // Set default date
             document.getElementById('date').value = new Date().toISOString().split('T')[0];
@@ -1567,22 +1940,65 @@
                 });
             });
             
-            // Export/Print
+            // Export functionality
             document.getElementById('export-data').addEventListener('click', () => {
+                // Reset selection
+                document.querySelectorAll('.export-option').forEach(opt => opt.classList.remove('selected'));
+                document.querySelector('.export-option[data-format="csv"]').classList.add('selected');
+                
+                // Set default filename
+                const today = new Date();
+                const dateStr = today.toISOString().split('T')[0];
+                document.getElementById('export-filename').value = `kehadiran-${dateStr}`;
+                
+                // Show modal
                 document.getElementById('export-modal').style.display = 'flex';
             });
             
+            // Export option selection
+            document.querySelectorAll('.export-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.export-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Date range selection
+            document.getElementById('export-range').addEventListener('change', function() {
+                const customRange = document.getElementById('custom-date-range');
+                customRange.style.display = this.value === 'custom' ? 'block' : 'none';
+                
+                if (this.value === 'custom') {
+                    const today = new Date();
+                    const lastWeek = new Date(today);
+                    lastWeek.setDate(today.getDate() - 7);
+                    
+                    document.getElementById('export-start-date').value = lastWeek.toISOString().split('T')[0];
+                    document.getElementById('export-end-date').value = today.toISOString().split('T')[0];
+                }
+            });
+            
+            // Confirm export
+            document.getElementById('confirm-export').addEventListener('click', handleExport);
+            
+            // Print
             document.getElementById('print-data').addEventListener('click', () => {
                 window.print();
             });
             
             // Modal controls
-            document.querySelectorAll('.close-modal, .btn-outline').forEach(btn => {
-                if (btn.id === 'cancel-export' || btn.id === 'cancel-feedback') {
-                    btn.addEventListener('click', function() {
-                        this.closest('.modal').style.display = 'none';
-                    });
-                }
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+            
+            document.getElementById('cancel-export').addEventListener('click', () => {
+                document.getElementById('export-modal').style.display = 'none';
+            });
+            
+            document.getElementById('cancel-feedback').addEventListener('click', () => {
+                document.getElementById('feedback-modal').style.display = 'none';
             });
             
             // Feedback
@@ -1607,14 +2023,65 @@
             window.addEventListener('offline', () => {
                 document.getElementById('offline-indicator').style.display = 'flex';
             });
-        });
-        
-        // Close modals on outside click
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
+            
+            // Close modals on outside click
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+            
+            // Initialize service worker for PWA
+            if ('serviceWorker' in navigator) {
+                try {
+                    const swCode = `
+                        self.addEventListener('install', (event) => {
+                            console.log('Service Worker installing...');
+                        });
+                        
+                        self.addEventListener('fetch', (event) => {
+                            // Network-first strategy
+                            event.respondWith(fetch(event.request));
+                        });
+                    `;
+                    
+                    const blob = new Blob([swCode], { type: 'application/javascript' });
+                    const swURL = URL.createObjectURL(blob);
+                    
+                    await navigator.serviceWorker.register(swURL, {
+                        scope: './',
+                        updateViaCache: 'none'
+                    });
+                    
+                    console.log('Service Worker registered');
+                } catch (error) {
+                    console.log('Service Worker registration failed:', error);
+                }
             }
         });
+        
+        function generateManifest() {
+            const manifest = {
+                "name": "HR Attendance System",
+                "short_name": "Attendance",
+                "description": "Professional Attendance Management System",
+                "start_url": ".",
+                "display": "standalone",
+                "background_color": "#1a365d",
+                "theme_color": "#1a365d",
+                "icons": [
+                    {
+                        "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233182ce%22>📊</text></svg>",
+                        "sizes": "192x192",
+                        "type": "image/svg+xml"
+                    }
+                ]
+            };
+            
+            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            document.getElementById('app-manifest').href = manifestURL;
+        }
     </script>
 </body>
 </html>
