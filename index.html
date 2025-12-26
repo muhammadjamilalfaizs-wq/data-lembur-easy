@@ -525,114 +525,6 @@
         .mt-3 { margin-top: 1.5rem; }
         .mt-4 { margin-top: 2rem; }
 
-        /* ===== PWA ELEMENTS ===== */
-        .pwa-splash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .pwa-splash.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .offline-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--danger);
-            color: white;
-            padding: 10px 15px;
-            border-radius: var(--radius);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            animation: fadeIn 0.3s ease;
-            box-shadow: var(--shadow);
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            margin-top: 50px;
-            padding-top: 25px;
-            border-top: 1px solid var(--gray-200);
-            color: var(--gray-600);
-            font-size: 0.875rem;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer-link {
-            color: var(--gray-600);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .footer-link:hover {
-            color: var(--accent);
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            
-            .app-header {
-                padding: 20px;
-            }
-            
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            
-            .header-stats {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .btn-group .btn {
-                width: 100%;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .footer-links {
-                justify-content: center;
-            }
-        }
-
         /* ===== EDIT MODE ===== */
         .edit-mode .card {
             border: 2px solid var(--warning);
@@ -652,95 +544,6 @@
             display: block;
         }
 
-        /* ===== SIDEBAR NAV (Mobile) ===== */
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid var(--gray-200);
-            padding: 10px;
-            z-index: 100;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-
-        .nav-items {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--gray-600);
-            font-size: 0.75rem;
-            padding: 8px;
-            border-radius: var(--radius);
-            transition: var(--transition);
-        }
-
-        .nav-item.active {
-            color: var(--accent);
-            background: var(--gray-100);
-        }
-
-        .nav-item i {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .mobile-nav {
-                display: block;
-            }
-            
-            body {
-                padding-bottom: 70px;
-            }
-        }
-
-        /* ===== PROGRESS BAR ===== */
-        .progress-bar {
-            height: 6px;
-            background: var(--gray-200);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        /* ===== TOOLTIPS ===== */
-        [data-tooltip] {
-            position: relative;
-            cursor: help;
-        }
-
-        [data-tooltip]:hover::before {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gray-800);
-            color: white;
-            padding: 6px 10px;
-            border-radius: var(--radius);
-            font-size: 0.75rem;
-            white-space: nowrap;
-            z-index: 100;
-            margin-bottom: 5px;
-        }
-
         /* ===== ANIMATIONS ===== */
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -750,73 +553,6 @@
 
         .pulse {
             animation: pulse 2s infinite;
-        }
-
-        /* ===== PRINT STYLES ===== */
-        @media print {
-            .no-print, .btn, .mobile-nav, .pwa-install-prompt {
-                display: none !important;
-            }
-            
-            body {
-                background: white;
-                color: black;
-                padding: 0;
-                max-width: none;
-            }
-            
-            .card {
-                box-shadow: none;
-                border: 1px solid #ddd;
-                break-inside: avoid;
-            }
-            
-            h1, h2, h3 {
-                color: black;
-            }
-        }
-
-        /* ===== EXPORT OPTIONS ===== */
-        .export-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .export-option {
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .export-option:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .export-option.selected {
-            border-color: var(--accent);
-            background: #ebf8ff;
-        }
-
-        .export-option i {
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-
-        .export-option .format-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .export-option .format-desc {
-            font-size: 0.8rem;
-            color: var(--gray-600);
         }
 
         /* ===== TOAST NOTIFICATIONS ===== */
@@ -857,24 +593,19 @@
         .toast.info {
             background: var(--accent);
         }
+
+        /* ===== TABLE ROW HIGHLIGHT ===== */
+        .editing-row {
+            background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%) !important;
+            border-left: 4px solid var(--warning);
+        }
+
+        .editing-row td {
+            border-bottom: 2px solid var(--warning);
+        }
     </style>
 </head>
 <body>
-    <!-- Splash Screen -->
-    <div id="pwa-splash" class="pwa-splash">
-        <div class="logo-icon">
-            <i class="fas fa-chart-line"></i>
-        </div>
-        <h1 style="color: white; margin-top: 20px;">HR Attendance System</h1>
-        <p style="color: rgba(255,255,255,0.8);">Loading professional workspace...</p>
-    </div>
-
-    <!-- Offline Indicator -->
-    <div id="offline-indicator" class="offline-indicator">
-        <i class="fas fa-wifi-slash"></i>
-        <span>You're offline. Working in limited mode.</span>
-    </div>
-
     <!-- Header -->
     <header class="app-header">
         <div class="header-top">
@@ -913,12 +644,12 @@
     <div class="container">
         <!-- Left Column: Input Form -->
         <div>
-            <div class="card mb-4">
+            <div class="card mb-4" id="form-section">
                 <h2><i class="fas fa-calendar-plus mr-2"></i>Input Kehadiran</h2>
                 
                 <div class="edit-notice" id="edit-notice">
                     <i class="fas fa-edit mr-2"></i>
-                    <strong>Edit Mode</strong> - Anda sedang mengedit data kehadiran
+                    <strong>Mode Edit Aktif</strong> - Anda sedang mengedit data kehadiran
                 </div>
                 
                 <form id="attendance-form">
@@ -969,9 +700,9 @@
                             <i class="fas fa-sync-alt mr-2"></i>Update Data
                         </button>
                         <button type="button" id="cancel-edit" class="btn btn-outline" style="display: none;">
-                            <i class="fas fa-times mr-2"></i>Batal
+                            <i class="fas fa-times mr-2"></i>Batal Edit
                         </button>
-                        <button type="reset" class="btn btn-outline">
+                        <button type="button" id="reset-form" class="btn btn-outline">
                             <i class="fas fa-redo mr-2"></i>Reset Form
                         </button>
                     </div>
@@ -1013,7 +744,7 @@
                     <h2><i class="fas fa-history mr-2"></i>Riwayat Kehadiran</h2>
                     <div>
                         <button id="export-data" class="btn btn-outline btn-sm">
-                            <i class="fas fa-download mr-2"></i>Export Data
+                            <i class="fas fa-download mr-2"></i>Export
                         </button>
                         <button id="print-data" class="btn btn-outline btn-sm">
                             <i class="fas fa-print mr-2"></i>Print
@@ -1081,28 +812,6 @@
         </div>
     </div>
     
-    <!-- Mobile Navigation -->
-    <nav class="mobile-nav">
-        <div class="nav-items">
-            <a href="#form" class="nav-item active">
-                <i class="fas fa-plus-circle"></i>
-                <span>Tambah</span>
-            </a>
-            <a href="#history" class="nav-item">
-                <i class="fas fa-history"></i>
-                <span>Riwayat</span>
-            </a>
-            <a href="#salary" class="nav-item">
-                <i class="fas fa-calculator"></i>
-                <span>Gaji</span>
-            </a>
-            <a href="#export" class="nav-item">
-                <i class="fas fa-download"></i>
-                <span>Export</span>
-            </a>
-        </div>
-    </nav>
-    
     <!-- Footer -->
     <footer>
         <div class="footer-content">
@@ -1123,118 +832,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- Export Modal -->
-    <div id="export-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-file-export mr-2"></i>Export Data Kehadiran</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group mb-3">
-                    <label class="form-label">Pilih Format Export</label>
-                    <div class="export-options">
-                        <div class="export-option" data-format="csv">
-                            <i class="fas fa-file-csv"></i>
-                            <div class="format-name">CSV (Excel)</div>
-                            <div class="format-desc">Format spreadsheet untuk Excel/LibreOffice</div>
-                        </div>
-                        <div class="export-option" data-format="json">
-                            <i class="fas fa-file-code"></i>
-                            <div class="format-name">JSON</div>
-                            <div class="format-desc">Format data untuk backup dan integrasi</div>
-                        </div>
-                        <div class="export-option" data-format="txt">
-                            <i class="fas fa-file-alt"></i>
-                            <div class="format-name">Teks</div>
-                            <div class="format-desc">Format teks sederhana untuk print</div>
-                        </div>
-                        <div class="export-option" data-format="pdf">
-                            <i class="fas fa-file-pdf"></i>
-                            <div class="format-name">PDF</div>
-                            <div class="format-desc">Format dokumen untuk laporan resmi</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group mb-3">
-                    <label class="form-label">Nama File</label>
-                    <input type="text" id="export-filename" class="form-control" value="kehadiran-data">
-                </div>
-                
-                <div class="form-group mb-3">
-                    <label class="form-label">Rentang Tanggal</label>
-                    <select id="export-range" class="form-control">
-                        <option value="all">Semua Data</option>
-                        <option value="month">Bulan Ini</option>
-                        <option value="week">Minggu Ini</option>
-                        <option value="custom">Kustom</option>
-                    </select>
-                </div>
-                
-                <div id="custom-date-range" style="display: none;">
-                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-                        <div class="form-group">
-                            <label class="form-label">Dari Tanggal</label>
-                            <input type="date" id="export-start-date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Sampai Tanggal</label>
-                            <input type="date" id="export-end-date" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group mb-3">
-                    <label class="form-label" style="display: flex; align-items: center; gap: 10px;">
-                        <input type="checkbox" id="include-summary" checked>
-                        <span>Sertakan ringkasan gaji</span>
-                    </label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="cancel-export">Batal</button>
-                <button class="btn btn-primary" id="confirm-export">
-                    <i class="fas fa-download mr-2"></i>Download
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Feedback Modal -->
-    <div id="feedback-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-comment-alt mr-2"></i>Kirim Feedback</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Email Anda</label>
-                    <input type="email" class="form-control" placeholder="nama@email.com">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Pesan</label>
-                    <textarea class="form-control" rows="5" placeholder="Berikan feedback untuk perbaikan sistem..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Rating</label>
-                    <div style="display: flex; gap: 10px;">
-                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
-                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
-                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
-                        <i class="fas fa-star" style="color: #ffc107; cursor: pointer;"></i>
-                        <i class="fas fa-star" style="color: #e2e8f0; cursor: pointer;"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="cancel-feedback">Batal</button>
-                <button class="btn btn-primary">Kirim</button>
-            </div>
-        </div>
-    </div>
 
     <script>
         // ============================================
@@ -1347,310 +944,6 @@
         }
 
         // ============================================
-        // EXPORT FUNCTIONS - FIXED TO WORK
-        // ============================================
-        
-        function exportToCSV(data, filename = 'kehadiran.csv') {
-            try {
-                // Filter data berdasarkan rentang tanggal
-                const filteredData = filterDataByRange(data);
-                
-                if (filteredData.length === 0) {
-                    showToast('Tidak ada data untuk diexport', 'error');
-                    return;
-                }
-                
-                // Buat header CSV
-                let csvContent = "Tanggal,Jam Kerja,Jam Istirahat,Jam Lembur,Total Jam,Catatan\n";
-                
-                // Tambahkan data
-                filteredData.forEach(item => {
-                    const row = [
-                        `"${item.date}"`,
-                        `"${item.hours}"`,
-                        item.breakTime,
-                        item.overtime,
-                        item.totalHours.toFixed(1),
-                        `"${item.note || ''}"`
-                    ];
-                    csvContent += row.join(',') + '\n';
-                });
-                
-                // Tambahkan summary jika dipilih
-                if (document.getElementById('include-summary').checked) {
-                    const summary = generateSummary(filteredData);
-                    csvContent += '\n\nRINGKASAN\n';
-                    csvContent += `Total Hari Kerja,${summary.totalDays}\n`;
-                    csvContent += `Total Jam Kerja,${summary.totalHours.toFixed(1)}\n`;
-                    csvContent += `Total Jam Lembur,${summary.totalOvertime.toFixed(1)}\n`;
-                    csvContent += `Gaji per Jam,${formatRupiah(summary.hourlyRate)}\n`;
-                    csvContent += `Estimasi Gaji,${formatRupiah(summary.estimatedSalary)}\n`;
-                }
-                
-                // Buat blob dan download
-                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                
-                link.href = url;
-                link.download = filename;
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                
-                // Cleanup
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                showToast(`Data berhasil diexport ke ${filename}`, 'success');
-                
-            } catch (error) {
-                console.error('Export error:', error);
-                showToast('Terjadi kesalahan saat export', 'error');
-            }
-        }
-        
-        function exportToJSON(data, filename = 'kehadiran.json') {
-            try {
-                const filteredData = filterDataByRange(data);
-                
-                if (filteredData.length === 0) {
-                    showToast('Tidak ada data untuk diexport', 'error');
-                    return;
-                }
-                
-                const exportData = {
-                    metadata: {
-                        exported: new Date().toISOString(),
-                        totalRecords: filteredData.length,
-                        salaryConfiguration: {
-                            monthlySalary: monthlySalary,
-                            hourlyRate: monthlySalary / 173
-                        }
-                    },
-                    data: filteredData,
-                    summary: document.getElementById('include-summary').checked ? 
-                        generateSummary(filteredData) : null
-                };
-                
-                const jsonString = JSON.stringify(exportData, null, 2);
-                const blob = new Blob([jsonString], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                
-                link.href = url;
-                link.download = filename;
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                showToast(`Data berhasil diexport ke ${filename}`, 'success');
-                
-            } catch (error) {
-                console.error('Export error:', error);
-                showToast('Terjadi kesalahan saat export', 'error');
-            }
-        }
-        
-        function exportToTXT(data, filename = 'kehadiran.txt') {
-            try {
-                const filteredData = filterDataByRange(data);
-                
-                if (filteredData.length === 0) {
-                    showToast('Tidak ada data untuk diexport', 'error');
-                    return;
-                }
-                
-                let txtContent = 'REKAP KEHADIRAN KERJA\n';
-                txtContent += '='.repeat(50) + '\n\n';
-                
-                // Tambahkan header
-                txtContent += 'Tanggal'.padEnd(12) + 
-                            'Jam Kerja'.padEnd(15) + 
-                            'Istirahat'.padEnd(10) + 
-                            'Lembur'.padEnd(10) + 
-                            'Total'.padEnd(10) + 
-                            'Catatan\n';
-                txtContent += '-'.repeat(70) + '\n';
-                
-                // Tambahkan data
-                filteredData.forEach(item => {
-                    txtContent += 
-                        item.date.padEnd(12) +
-                        item.hours.padEnd(15) +
-                        `${item.breakTime} jam`.padEnd(10) +
-                        `${item.overtime} jam`.padEnd(10) +
-                        `${item.totalHours.toFixed(1)} jam`.padEnd(10) +
-                        (item.note || '') + '\n';
-                });
-                
-                // Tambahkan summary jika dipilih
-                if (document.getElementById('include-summary').checked) {
-                    const summary = generateSummary(filteredData);
-                    txtContent += '\n' + '='.repeat(50) + '\n';
-                    txtContent += 'RINGKASAN\n';
-                    txtContent += '='.repeat(50) + '\n';
-                    txtContent += `Total Hari Kerja: ${summary.totalDays}\n`;
-                    txtContent += `Total Jam Kerja: ${summary.totalHours.toFixed(1)} jam\n`;
-                    txtContent += `Total Jam Lembur: ${summary.totalOvertime.toFixed(1)} jam\n`;
-                    txtContent += `Gaji per Jam: ${formatRupiah(summary.hourlyRate)}\n`;
-                    txtContent += `Estimasi Gaji: ${formatRupiah(summary.estimatedSalary)}\n`;
-                }
-                
-                txtContent += '\n' + '='.repeat(50) + '\n';
-                txtContent += `Dicetak pada: ${new Date().toLocaleString('id-ID')}\n`;
-                
-                const blob = new Blob([txtContent], { type: 'text/plain;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                
-                link.href = url;
-                link.download = filename;
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                showToast(`Data berhasil diexport ke ${filename}`, 'success');
-                
-            } catch (error) {
-                console.error('Export error:', error);
-                showToast('Terjadi kesalahan saat export', 'error');
-            }
-        }
-        
-        function exportToPDF(data, filename = 'kehadiran.pdf') {
-            try {
-                // Simulasi PDF export karena pembuatan PDF yang sebenarnya memerlukan library
-                showToast('Fitur PDF akan segera tersedia. Untuk saat ini gunakan format CSV atau TXT.', 'info');
-                
-                // Fallback ke TXT jika PDF tidak tersedia
-                setTimeout(() => {
-                    exportToTXT(data, filename.replace('.pdf', '.txt'));
-                }, 1500);
-                
-            } catch (error) {
-                console.error('PDF export error:', error);
-                showToast('Terjadi kesalahan saat export PDF', 'error');
-            }
-        }
-        
-        function filterDataByRange(data) {
-            const range = document.getElementById('export-range').value;
-            
-            if (range === 'all') {
-                return data;
-            }
-            
-            const now = new Date();
-            let startDate, endDate;
-            
-            if (range === 'month') {
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            } else if (range === 'week') {
-                const day = now.getDay();
-                const diff = now.getDate() - day + (day === 0 ? -6 : 1);
-                startDate = new Date(now.setDate(diff));
-                startDate.setHours(0, 0, 0, 0);
-                endDate = new Date(startDate);
-                endDate.setDate(startDate.getDate() + 6);
-            } else if (range === 'custom') {
-                const startInput = document.getElementById('export-start-date').value;
-                const endInput = document.getElementById('export-end-date').value;
-                
-                if (!startInput || !endInput) {
-                    showToast('Harap pilih rentang tanggal yang valid', 'error');
-                    return data;
-                }
-                
-                startDate = new Date(startInput);
-                endDate = new Date(endInput);
-            }
-            
-            return data.filter(item => {
-                const [day, month, year] = item.date.split('/').map(Number);
-                const itemDate = new Date(year, month - 1, day);
-                return itemDate >= startDate && itemDate <= endDate;
-            });
-        }
-        
-        function generateSummary(data) {
-            let totalDays = data.length;
-            let totalHours = 0;
-            let totalOvertime = 0;
-            
-            data.forEach(item => {
-                totalHours += item.totalHours;
-                totalOvertime += item.overtime;
-            });
-            
-            const hourlyRate = monthlySalary / 173;
-            const estimatedSalary = totalHours * hourlyRate;
-            
-            return {
-                totalDays,
-                totalHours,
-                totalOvertime,
-                hourlyRate,
-                estimatedSalary
-            };
-        }
-        
-        function handleExport() {
-            const selectedFormat = document.querySelector('.export-option.selected')?.dataset.format || 'csv';
-            let filename = document.getElementById('export-filename').value.trim();
-            
-            if (!filename) {
-                filename = 'kehadiran-data';
-            }
-            
-            // Tambahkan ekstensi file
-            const extensions = {
-                csv: '.csv',
-                json: '.json',
-                txt: '.txt',
-                pdf: '.pdf'
-            };
-            
-            if (!filename.toLowerCase().endsWith(extensions[selectedFormat])) {
-                filename += extensions[selectedFormat];
-            }
-            
-            // Panggil fungsi export sesuai format
-            switch(selectedFormat) {
-                case 'csv':
-                    exportToCSV(attendanceData, filename);
-                    break;
-                case 'json':
-                    exportToJSON(attendanceData, filename);
-                    break;
-                case 'txt':
-                    exportToTXT(attendanceData, filename);
-                    break;
-                case 'pdf':
-                    exportToPDF(attendanceData, filename);
-                    break;
-                default:
-                    exportToCSV(attendanceData, filename);
-            }
-            
-            // Tutup modal
-            document.getElementById('export-modal').style.display = 'none';
-        }
-
-        // ============================================
         // RENDER FUNCTIONS
         // ============================================
         
@@ -1667,7 +960,7 @@
                 document.getElementById('attendance-table').style.display = 'table';
                 
                 tbody.innerHTML = attendanceData.map((item, index) => `
-                    <tr>
+                    <tr id="row-${index}" class="${index === currentEditIndex ? 'editing-row' : ''}">
                         <td><strong>${item.date}</strong></td>
                         <td>${item.hours}</td>
                         <td>${item.breakTime === 0 ? '-' : item.breakTime + ' jam'}</td>
@@ -1676,10 +969,10 @@
                         <td>${item.note || '-'}</td>
                         <td>
                             <div style="display: flex; gap: 5px;">
-                                <button class="btn btn-outline btn-sm edit-btn" data-index="${index}" title="Edit">
+                                <button class="btn btn-outline btn-sm edit-btn" data-index="${index}" title="Edit data ini">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-outline btn-sm delete-btn" data-index="${index}" title="Hapus">
+                                <button class="btn btn-outline btn-sm delete-btn" data-index="${index}" title="Hapus data ini">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -1687,13 +980,21 @@
                     </tr>
                 `).join('');
                 
-                // Add event listeners
+                // Add event listeners untuk edit dan delete
                 document.querySelectorAll('.edit-btn').forEach(btn => {
-                    btn.addEventListener('click', () => editAttendance(parseInt(btn.dataset.index)));
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const index = parseInt(this.getAttribute('data-index'));
+                        editAttendance(index);
+                    });
                 });
                 
                 document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', () => deleteAttendance(parseInt(btn.dataset.index)));
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const index = parseInt(this.getAttribute('data-index'));
+                        deleteAttendance(index);
+                    });
                 });
             }
             
@@ -1737,13 +1038,19 @@
             document.getElementById('stat-total-days').textContent = totalDays;
             document.getElementById('stat-estimated-salary').textContent = formatRupiah(estimatedSalary);
         }
-        
+
         // ============================================
-        // ATTENDANCE MANAGEMENT
+        // ATTENDANCE MANAGEMENT - FIXED EDIT FUNCTION
         // ============================================
         
         function addAttendance(e) {
             e.preventDefault();
+            
+            // Jika sedang mode edit, jangan tambah data baru
+            if (isEditMode) {
+                showToast('Selesaikan edit terlebih dahulu', 'error');
+                return;
+            }
             
             const date = document.getElementById('date').value;
             const startTime = document.getElementById('start-time').value;
@@ -1753,7 +1060,7 @@
             const note = document.getElementById('note').value;
             
             if (!date || !startTime || !endTime) {
-                alert('Harap isi semua field yang diperlukan');
+                showToast('Harap isi tanggal, jam masuk, dan jam pulang', 'error');
                 return;
             }
             
@@ -1771,12 +1078,12 @@
                 note: note
             };
             
+            // Tambah data baru
             attendanceData.push(attendance);
             saveData();
             renderTable();
             resetForm();
             
-            // Show success feedback
             showToast('Data kehadiran berhasil ditambahkan', 'success');
         }
         
@@ -1787,6 +1094,7 @@
             const dateInput = parseDateForInput(data.date);
             const timeRange = parseTimeRange(data.hours);
             
+            // Isi form dengan data yang akan diedit
             document.getElementById('date').value = dateInput;
             document.getElementById('start-time').value = timeRange.startTime;
             document.getElementById('end-time').value = timeRange.endTime;
@@ -1795,6 +1103,7 @@
             document.getElementById('note').value = data.note || '';
             document.getElementById('edit-index').value = index;
             
+            // Aktifkan mode edit
             activateEditMode(index);
         }
         
@@ -1806,6 +1115,7 @@
                 return;
             }
             
+            // Ambil data dari form
             const date = document.getElementById('date').value;
             const startTime = document.getElementById('start-time').value;
             const endTime = document.getElementById('end-time').value;
@@ -1813,11 +1123,19 @@
             const overtime = parseFloat(document.getElementById('overtime').value) || 0;
             const note = document.getElementById('note').value;
             
+            if (!date || !startTime || !endTime) {
+                showToast('Harap isi semua field yang diperlukan', 'error');
+                return;
+            }
+            
+            // Format data baru
             const formattedDate = formatDate(date);
             const formattedHours = formatTime(startTime, endTime);
             let totalHours = calculateHours(startTime, endTime, breakTime);
             totalHours += overtime;
             
+            // UPDATE DATA YANG SUDAH ADA DI ARRAY
+            // Ini yang penting: hanya update, tidak push data baru
             attendanceData[index] = {
                 date: formattedDate,
                 hours: formattedHours,
@@ -1827,8 +1145,11 @@
                 note: note
             };
             
+            // Simpan dan render ulang
             saveData();
             renderTable();
+            
+            // Nonaktifkan mode edit
             deactivateEditMode();
             
             showToast('Data berhasil diperbarui', 'success');
@@ -1840,6 +1161,7 @@
                 saveData();
                 renderTable();
                 
+                // Jika sedang mode edit dan data yang dihapus adalah yang sedang diedit
                 if (isEditMode && currentEditIndex === index) {
                     deactivateEditMode();
                 }
@@ -1852,35 +1174,53 @@
             isEditMode = true;
             currentEditIndex = index;
             
+            // Update UI untuk mode edit
             document.getElementById('edit-notice').classList.add('show');
             document.getElementById('form-section').classList.add('edit-mode');
             document.getElementById('submit-btn').style.display = 'none';
             document.getElementById('update-btn').style.display = 'flex';
             document.getElementById('cancel-edit').style.display = 'flex';
+            document.getElementById('reset-form').style.display = 'none';
+            
+            // Update judul form
+            document.querySelector('#form-section h2').innerHTML = 
+                '<i class="fas fa-edit mr-2"></i>Edit Data Kehadiran';
+            
+            // Scroll ke form
+            document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
         }
         
         function deactivateEditMode() {
             isEditMode = false;
             currentEditIndex = -1;
             
+            // Reset UI dari mode edit
             document.getElementById('edit-notice').classList.remove('show');
             document.getElementById('form-section').classList.remove('edit-mode');
             document.getElementById('submit-btn').style.display = 'flex';
             document.getElementById('update-btn').style.display = 'none';
             document.getElementById('cancel-edit').style.display = 'none';
+            document.getElementById('reset-form').style.display = 'flex';
             document.getElementById('edit-index').value = '-1';
+            
+            // Kembalikan judul form
+            document.querySelector('#form-section h2').innerHTML = 
+                '<i class="fas fa-calendar-plus mr-2"></i>Input Kehadiran';
             
             resetForm();
         }
         
         function resetForm() {
-            document.getElementById('attendance-form').reset();
-            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            // Reset form ke nilai default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
             document.getElementById('start-time').value = '08:00';
             document.getElementById('end-time').value = '17:00';
             document.getElementById('break-time').value = '1';
+            document.getElementById('overtime').value = '';
+            document.getElementById('note').value = '';
         }
-        
+
         // ============================================
         // SALARY MANAGEMENT
         // ============================================
@@ -1900,38 +1240,113 @@
             
             showToast(`Gaji berhasil diupdate menjadi ${formatRupiah(monthlySalary)}`, 'success');
         }
+
+        // ============================================
+        // EXPORT FUNCTIONS
+        // ============================================
         
+        function exportToCSV() {
+            try {
+                if (attendanceData.length === 0) {
+                    showToast('Tidak ada data untuk diexport', 'error');
+                    return;
+                }
+                
+                // Buat header CSV
+                let csvContent = "Tanggal,Jam Kerja,Jam Istirahat,Jam Lembur,Total Jam,Catatan\n";
+                
+                // Tambahkan data
+                attendanceData.forEach(item => {
+                    const row = [
+                        `"${item.date}"`,
+                        `"${item.hours}"`,
+                        item.breakTime,
+                        item.overtime,
+                        item.totalHours.toFixed(1),
+                        `"${item.note || ''}"`
+                    ];
+                    csvContent += row.join(',') + '\n';
+                });
+                
+                // Buat blob dan download
+                const today = new Date();
+                const dateStr = today.toISOString().split('T')[0];
+                const filename = `kehadiran-${dateStr}.csv`;
+                
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                
+                // Cleanup
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showToast(`Data berhasil diexport ke ${filename}`, 'success');
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showToast('Terjadi kesalahan saat export', 'error');
+            }
+        }
+
         // ============================================
         // EVENT LISTENERS
         // ============================================
         
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize
             generateManifest();
             
             // Set default date
-            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
             
             // Initial render
             renderTable();
             updateDateTime();
             setInterval(updateDateTime, 1000);
             
-            // Hide splash screen
-            setTimeout(() => {
-                document.getElementById('pwa-splash').classList.add('hidden');
-            }, 1500);
-            
-            // Form submission
+            // ===== FORM SUBMISSION =====
             document.getElementById('attendance-form').addEventListener('submit', addAttendance);
-            document.getElementById('update-btn').addEventListener('click', updateAttendance);
-            document.getElementById('cancel-edit').addEventListener('click', deactivateEditMode);
-            document.getElementById('add-first-data').addEventListener('click', () => {
+            
+            // ===== BUTTON CLICK HANDLERS =====
+            document.getElementById('update-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                updateAttendance();
+            });
+            
+            document.getElementById('cancel-edit').addEventListener('click', function(e) {
+                e.preventDefault();
+                deactivateEditMode();
+            });
+            
+            document.getElementById('reset-form').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (isEditMode) {
+                    if (confirm('Batalkan edit? Perubahan akan hilang.')) {
+                        deactivateEditMode();
+                    }
+                } else {
+                    resetForm();
+                    showToast('Form telah direset', 'info');
+                }
+            });
+            
+            document.getElementById('add-first-data').addEventListener('click', function() {
                 document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
             });
             
-            // Salary configuration
+            // ===== SALARY CONFIGURATION =====
             document.getElementById('save-salary').addEventListener('click', updateSalary);
+            
             document.querySelectorAll('.preset-buttons button').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const salary = parseInt(this.dataset.salary);
@@ -1940,124 +1355,38 @@
                 });
             });
             
-            // Export functionality
-            document.getElementById('export-data').addEventListener('click', () => {
-                // Reset selection
-                document.querySelectorAll('.export-option').forEach(opt => opt.classList.remove('selected'));
-                document.querySelector('.export-option[data-format="csv"]').classList.add('selected');
-                
-                // Set default filename
-                const today = new Date();
-                const dateStr = today.toISOString().split('T')[0];
-                document.getElementById('export-filename').value = `kehadiran-${dateStr}`;
-                
-                // Show modal
-                document.getElementById('export-modal').style.display = 'flex';
-            });
+            // ===== EXPORT FUNCTIONALITY =====
+            document.getElementById('export-data').addEventListener('click', exportToCSV);
             
-            // Export option selection
-            document.querySelectorAll('.export-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.export-option').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-            
-            // Date range selection
-            document.getElementById('export-range').addEventListener('change', function() {
-                const customRange = document.getElementById('custom-date-range');
-                customRange.style.display = this.value === 'custom' ? 'block' : 'none';
-                
-                if (this.value === 'custom') {
-                    const today = new Date();
-                    const lastWeek = new Date(today);
-                    lastWeek.setDate(today.getDate() - 7);
-                    
-                    document.getElementById('export-start-date').value = lastWeek.toISOString().split('T')[0];
-                    document.getElementById('export-end-date').value = today.toISOString().split('T')[0];
-                }
-            });
-            
-            // Confirm export
-            document.getElementById('confirm-export').addEventListener('click', handleExport);
-            
-            // Print
-            document.getElementById('print-data').addEventListener('click', () => {
+            document.getElementById('print-data').addEventListener('click', function() {
                 window.print();
             });
             
-            // Modal controls
-            document.querySelectorAll('.close-modal').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.modal').style.display = 'none';
-                });
+            // ===== FOOTER LINKS =====
+            document.getElementById('contact-support').addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'mailto:muhammadjamilalfaizs@gmail.com?subject=Support%20HR%20Attendance%20System';
             });
             
-            document.getElementById('cancel-export').addEventListener('click', () => {
-                document.getElementById('export-modal').style.display = 'none';
+            document.getElementById('send-feedback').addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'mailto:muhammadjamilalfaizs@gmail.com?subject=Feedback%20HR%20Attendance%20System';
             });
             
-            document.getElementById('cancel-feedback').addEventListener('click', () => {
-                document.getElementById('feedback-modal').style.display = 'none';
+            document.getElementById('privacy-policy').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Kebijakan Privasi:\n\nData kehadiran disimpan secara lokal di browser Anda. Kami tidak mengumpulkan atau mengirim data ke server manapun.');
             });
             
-            // Feedback
-            document.getElementById('send-feedback').addEventListener('click', () => {
-                document.getElementById('feedback-modal').style.display = 'flex';
-            });
-            
-            // Mobile navigation
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-            
-            // Network detection
-            window.addEventListener('online', () => {
-                document.getElementById('offline-indicator').style.display = 'none';
-            });
-            
-            window.addEventListener('offline', () => {
-                document.getElementById('offline-indicator').style.display = 'flex';
-            });
-            
-            // Close modals on outside click
-            window.addEventListener('click', function(event) {
-                if (event.target.classList.contains('modal')) {
-                    event.target.style.display = 'none';
+            // ===== KEYBOARD SHORTCUTS =====
+            document.addEventListener('keydown', function(e) {
+                // ESC untuk cancel edit
+                if (e.key === 'Escape' && isEditMode) {
+                    if (confirm('Batalkan edit? Perubahan akan hilang.')) {
+                        deactivateEditMode();
+                    }
                 }
             });
-            
-            // Initialize service worker for PWA
-            if ('serviceWorker' in navigator) {
-                try {
-                    const swCode = `
-                        self.addEventListener('install', (event) => {
-                            console.log('Service Worker installing...');
-                        });
-                        
-                        self.addEventListener('fetch', (event) => {
-                            // Network-first strategy
-                            event.respondWith(fetch(event.request));
-                        });
-                    `;
-                    
-                    const blob = new Blob([swCode], { type: 'application/javascript' });
-                    const swURL = URL.createObjectURL(blob);
-                    
-                    await navigator.serviceWorker.register(swURL, {
-                        scope: './',
-                        updateViaCache: 'none'
-                    });
-                    
-                    console.log('Service Worker registered');
-                } catch (error) {
-                    console.log('Service Worker registration failed:', error);
-                }
-            }
         });
         
         function generateManifest() {
