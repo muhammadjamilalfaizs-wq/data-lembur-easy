@@ -3,273 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Attendance System | Sistem Kehadiran</title>
+    <title>WorkSync | Workforce Management System</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#1a365d">
-    <meta name="description" content="Sistem Manajemen Kehadiran dan Perhitungan Gaji Professional">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="HR Attendance">
+    <meta name="theme-color" content="#1A237E">
+    <meta name="description" content="WorkSync: Your Workforce, Perfectly Synchronized">
     
-    <!-- Icons untuk PWA -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-    
-    <!-- Manifest -->
-    <link rel="manifest" id="app-manifest">
-    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ===== VARIABLES & RESET ===== */
+        /* ===== VARIABLES ===== */
         :root {
-            --primary: #1a365d;
-            --primary-dark: #0f2847;
-            --secondary: #2d3748;
-            --accent: #3182ce;
-            --accent-light: #4299e1;
-            --success: #38a169;
-            --warning: #d69e2e;
-            --danger: #e53e3e;
-            --light: #f7fafc;
-            --gray-100: #edf2f7;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e0;
-            --gray-600: #718096;
-            --gray-800: #2d3748;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --radius: 8px;
-            --radius-lg: 12px;
-            --transition: all 0.3s ease;
+            /* WorkSync Brand Colors */
+            --primary: #1A237E;      /* Navy Blue - Professional */
+            --primary-dark: #0D1538;
+            --primary-light: #283593;
+            --secondary: #00B0FF;    /* Electric Blue - Tech/Innovation */
+            --secondary-dark: #0091EA;
+            --accent: #00C853;       /* Lime Green - Growth/Success */
+            --accent-light: #00E676;
+            --warning: #FF9100;
+            --danger: #FF1744;
+            --info: #2962FF;
+            
+            /* Neutrals */
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #EEEEEE;
+            --gray-300: #E0E0E0;
+            --gray-400: #BDBDBD;
+            --gray-500: #9E9E9E;
+            --gray-600: #757575;
+            --gray-700: #616161;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, #18FFFF 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, #69F0AE 100%);
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 28px rgba(0,0,0,0.12);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+            
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background-color: #f8fafc;
-            color: var(--gray-800);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--gray-900);
             line-height: 1.6;
+            min-height: 100vh;
             padding: 20px;
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* ===== TYPOGRAPHY ===== */
-        h1, h2, h3, h4 {
+        h1, h2, h3, h4, h5 {
             font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
+            line-height: 1.2;
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         h2 {
-            font-size: 1.5rem;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 0.5rem;
+            font-size: 1.75rem;
+            color: var(--primary);
             margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 4px;
+            background: var(--gradient-secondary);
+            border-radius: 2px;
         }
 
         h3 {
             font-size: 1.25rem;
+            color: var(--gray-800);
         }
 
         p {
             color: var(--gray-600);
-            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .text-muted { color: var(--gray-500); }
+
+        /* ===== WORK SYNC LOGO ===== */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '⟳';
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-tagline {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-top: 2px;
         }
 
         /* ===== LAYOUT ===== */
-        .container {
+        .app-container {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             gap: 30px;
             margin-top: 20px;
         }
 
-        @media (max-width: 1024px) {
-            .container {
+        @media (max-width: 1200px) {
+            .app-container {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* ===== HEADER ===== */
-        .app-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 25px 30px;
-            border-radius: var(--radius-lg);
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
             margin-bottom: 30px;
-            box-shadow: var(--shadow-lg);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .user-profile:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* ===== STATS CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-base);
             position: relative;
             overflow: hidden;
         }
 
-        .app-header::before {
+        .stat-card::before {
             content: '';
             position: absolute;
             top: 0;
-            right: 0;
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            transform: translate(30%, -30%);
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-secondary);
         }
 
-        .header-top {
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
+            align-items: flex-start;
+            margin-bottom: 20px;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            background: rgba(255,255,255,0.15);
-            width: 50px;
-            height: 50px;
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 20px;
         }
 
-        .header-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 25px;
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: var(--radius);
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-item {
-            text-align: center;
+        .stat-trend {
+            font-size: 0.875rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(0, 176, 255, 0.1);
+            color: var(--secondary);
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            color: var(--primary);
+            margin-bottom: 4px;
         }
 
         .stat-label {
             font-size: 0.875rem;
-            opacity: 0.9;
+            color: var(--gray-600);
         }
 
-        /* ===== CARDS ===== */
-        .card {
+        /* ===== MAIN CARDS ===== */
+        .main-card {
             background: white;
             border-radius: var(--radius-lg);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 1px solid var(--gray-200);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+            transition: var(--transition-base);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card:hover {
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-secondary);
+        }
+
+        .main-card:hover {
             box-shadow: var(--shadow-lg);
+            border-color: var(--gray-200);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
         }
 
         /* ===== FORMS ===== */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 24px;
         }
 
         .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
             font-weight: 500;
-            color: var(--gray-800);
-            font-size: 0.9rem;
+            color: var(--gray-700);
+            font-size: 0.875rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--gray-300);
-            border-radius: var(--radius);
+            padding: 14px 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-md);
             font-size: 15px;
-            transition: var(--transition);
+            transition: var(--transition-base);
             background: white;
+            color: var(--gray-900);
         }
 
         .form-control:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(0, 176, 255, 0.1);
         }
 
-        .form-help {
-            font-size: 0.8rem;
-            color: var(--gray-600);
-            margin-top: 0.25rem;
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
         /* ===== BUTTONS ===== */
         .btn {
-            padding: 12px 24px;
+            padding: 14px 24px;
             border: none;
-            border-radius: var(--radius);
-            font-size: 15px;
-            font-weight: 500;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-base);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
-
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .btn-primary {
-            background: var(--accent);
+            background: var(--gradient-primary);
             color: white;
         }
 
         .btn-primary:hover {
-            background: var(--accent-light);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .btn-success {
-            background: var(--success);
+        .btn-secondary {
+            background: var(--gradient-secondary);
             color: white;
         }
 
-        .btn-success:hover {
-            background: #2f855a;
-            transform: translateY(-1px);
+        .btn-success {
+            background: var(--accent);
+            color: white;
         }
 
         .btn-warning {
@@ -277,80 +445,117 @@
             color: white;
         }
 
-        .btn-warning:hover {
-            background: #b7791f;
-            transform: translateY(-1px);
-        }
-
         .btn-danger {
             background: var(--danger);
             color: white;
         }
 
-        .btn-danger:hover {
-            background: #c53030;
-            transform: translateY(-1px);
-        }
-
         .btn-outline {
             background: transparent;
-            border: 1px solid var(--gray-300);
-            color: var(--gray-800);
+            border: 2px solid var(--gray-300);
+            color: var(--gray-700);
         }
 
         .btn-outline:hover {
-            background: var(--gray-100);
-            border-color: var(--gray-400);
+            border-color: var(--secondary);
+            color: var(--secondary);
+            background: rgba(0, 176, 255, 0.05);
+        }
+
+        .btn-sm {
+            padding: 10px 16px;
+            font-size: 13px;
         }
 
         .btn-group {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 2rem;
+            gap: 12px;
+            margin-top: 32px;
         }
 
         /* ===== TABLES ===== */
-        .table-container {
+        .table-wrapper {
             overflow-x: auto;
-            border-radius: var(--radius);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
             border: 1px solid var(--gray-200);
             background: white;
         }
 
-        table {
+        .table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            min-width: 1000px;
         }
 
-        th {
-            background: var(--gray-100);
-            color: var(--gray-800);
+        .table th {
+            background: var(--gray-50);
+            color: var(--gray-700);
             font-weight: 600;
             text-align: left;
             padding: 16px;
-            font-size: 0.875rem;
-            border-bottom: 2px solid var(--gray-300);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--gray-200);
         }
 
-        td {
+        .table td {
             padding: 16px;
             border-bottom: 1px solid var(--gray-200);
-            font-size: 0.9rem;
+            color: var(--gray-700);
+            vertical-align: top;
         }
 
-        tr:hover {
-            background: var(--gray-100);
+        .table tr:hover {
+            background: var(--gray-50);
         }
 
-        tr:last-child td {
+        .table tr:last-child td {
             border-bottom: none;
         }
 
-        .status-badge {
-            display: inline-block;
+        /* ===== DAY BADGE ===== */
+        .day-badge {
+            display: inline-flex;
+            align-items: center;
             padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .day-weekday {
+            background: rgba(0, 176, 255, 0.1);
+            color: var(--secondary);
+        }
+
+        .day-weekend {
+            background: rgba(255, 64, 129, 0.1);
+            color: #FF4081;
+        }
+
+        /* ===== NOTES COLUMN ===== */
+        .notes-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .notes-cell.expanded {
+            white-space: normal;
+            overflow: visible;
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
@@ -358,65 +563,86 @@
             letter-spacing: 0.5px;
         }
 
-        .badge-completed {
-            background: #c6f6d5;
-            color: #22543d;
+        .badge-success {
+            background: rgba(0, 200, 83, 0.1);
+            color: var(--accent);
         }
 
-        .badge-pending {
-            background: #fed7d7;
-            color: #742a2a;
+        .badge-warning {
+            background: rgba(255, 145, 0, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-info {
+            background: rgba(41, 98, 255, 0.1);
+            color: var(--info);
         }
 
         /* ===== CALCULATION PANEL ===== */
         .calculation-panel {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
-            border-left: 4px solid var(--accent);
-            margin-top: 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculation-panel::before {
+            content: '⟳';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 120px;
+            opacity: 0.1;
+            color: white;
         }
 
         .calculation-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
-        .calculation-item {
+        .calc-item {
             text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .calc-value {
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .calc-label {
             font-size: 0.875rem;
-            color: var(--gray-600);
-        }
-
-        .total-row {
-            background: var(--primary);
-            color: white;
-            padding: 25px;
-            border-radius: var(--radius);
-            margin-top: 20px;
-        }
-
-        .total-label {
-            font-size: 1rem;
             opacity: 0.9;
         }
 
+        .total-row {
+            background: white;
+            color: var(--primary);
+            padding: 32px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .total-label {
+            font-size: 0.875rem;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
         .total-value {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
         }
 
@@ -429,147 +655,134 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
+            background: rgba(13, 21, 56, 0.8);
+            backdrop-filter: blur(8px);
             align-items: center;
             justify-content: center;
             animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-content {
             background: white;
             border-radius: var(--radius-lg);
             width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            max-width: 500px;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-xl);
         }
 
         .modal-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid var(--gray-200);
+            padding: 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .modal-body {
-            padding: 25px;
+            padding: 32px;
         }
 
         .modal-footer {
-            padding: 20px 25px;
+            padding: 24px;
             border-top: 1px solid var(--gray-200);
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--gray-600);
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 50%;
+            gap: 12px;
+            z-index: 9999;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease;
         }
 
-        .close-modal:hover {
-            background: var(--gray-100);
-            color: var(--gray-800);
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: var(--transition-base);
+        }
+
+        .footer-link:hover {
+            color: var(--secondary);
         }
 
         /* ===== UTILITIES ===== */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: var(--gray-600);
+            padding: 80px 20px;
+            color: var(--gray-500);
         }
 
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 20px;
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gray-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
             color: var(--gray-400);
+            font-size: 32px;
         }
 
-        .text-muted {
-            color: var(--gray-600);
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
-        .mb-1 { margin-bottom: 0.5rem; }
-        .mb-2 { margin-bottom: 1rem; }
-        .mb-3 { margin-bottom: 1.5rem; }
-        .mb-4 { margin-bottom: 2rem; }
-        .mt-1 { margin-top: 0.5rem; }
-        .mt-2 { margin-top: 1rem; }
-        .mt-3 { margin-top: 1.5rem; }
-        .mt-4 { margin-top: 2rem; }
-
-        /* ===== EDIT MODE ===== */
-        .edit-mode .card {
-            border: 2px solid var(--warning);
-            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1);
-        }
-
-        .edit-notice {
-            background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
-            border-left: 4px solid var(--warning);
-            padding: 15px;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .edit-notice.show {
-            display: block;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
         }
 
         /* ===== ANIMATIONS ===== */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        /* ===== TOAST NOTIFICATIONS ===== */
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: var(--radius);
-            color: white;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 10000;
-            box-shadow: var(--shadow-lg);
-            animation: slideInRight 0.3s ease;
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes slideInRight {
@@ -577,100 +790,156 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-
-        .toast.success {
-            background: var(--success);
-        }
-
-        .toast.error {
-            background: var(--danger);
-        }
-
-        .toast.info {
-            background: var(--accent);
-        }
-
-        /* ===== TABLE ROW HIGHLIGHT ===== */
-        .editing-row {
-            background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%) !important;
-            border-left: 4px solid var(--warning);
-        }
-
-        .editing-row td {
-            border-bottom: 2px solid var(--warning);
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .nav-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .main-card {
+                padding: 24px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="app-header">
-        <div class="header-top">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
             <div class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-chart-line"></i>
+                    <!-- Sync icon animated -->
                 </div>
+                <div class="logo-text">
+                    <div class="logo-main">WORK SYNC</div>
+                    <div class="logo-tagline">Your Workforce, Perfectly Synchronized</div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="time-display">
+                <div id="current-date" class="text-sm text-muted">Selasa, 19 Des 2025</div>
+                <div id="current-time" class="text-lg font-bold">05:31:45</div>
+            </div>
+            <div class="user-profile" id="user-profile">
+                <div class="avatar" id="user-avatar">JD</div>
                 <div>
-                    <h1>HR Attendance System</h1>
-                    <p>Sistem Manajemen Kehadiran Professional</p>
+                    <div class="text-sm font-medium" id="user-name">John Doe</div>
+                    <div class="text-xs text-muted" id="user-position">HR Manager</div>
                 </div>
             </div>
-            <div class="text-center">
-                <div id="current-date" class="stat-value">19 Des 2025</div>
-                <div id="current-time" class="stat-label">05:31:45</div>
+        </div>
+    </nav>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-trend">+12%</div>
             </div>
+            <div class="stat-value" id="stat-total-hours">0 jam</div>
+            <div class="stat-label">Total Jam Kerja</div>
         </div>
         
-        <div class="header-stats">
-            <div class="stat-item">
-                <div class="stat-value" id="stat-total-hours">0</div>
-                <div class="stat-label">Total Jam Kerja</div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-trend">On Track</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="stat-total-days">0</div>
-                <div class="stat-label">Hari Kerja</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="stat-estimated-salary">Rp 0</div>
-                <div class="stat-label">Estimasi Gaji</div>
-            </div>
+            <div class="stat-value" id="stat-total-days">0 hari</div>
+            <div class="stat-label">Hari Kerja</div>
         </div>
-    </header>
+        
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-trend">Estimated</div>
+            </div>
+            <div class="stat-value" id="stat-estimated-salary">Rp 0</div>
+            <div class="stat-label">Estimasi Gaji</div>
+        </div>
+    </div>
 
     <!-- Main Container -->
-    <div class="container">
-        <!-- Left Column: Input Form -->
+    <div class="app-container">
+        <!-- Left Column -->
         <div>
-            <div class="card mb-4" id="form-section">
-                <h2><i class="fas fa-calendar-plus mr-2"></i>Input Kehadiran</h2>
+            <!-- Input Form -->
+            <div class="main-card">
+                <div class="card-header">
+                    <div>
+                        <h2>Input Kehadiran</h2>
+                        <p class="text-sm text-muted">Tambahkan data kehadiran harian</p>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span class="text-sm">Online</span>
+                    </div>
+                </div>
                 
-                <div class="edit-notice" id="edit-notice">
-                    <i class="fas fa-edit mr-2"></i>
-                    <strong>Mode Edit Aktif</strong> - Anda sedang mengedit data kehadiran
+                <div class="edit-notice" id="edit-notice" style="display: none;">
+                    <div class="badge badge-warning">
+                        <i class="fas fa-edit mr-2"></i>Mode Edit Aktif
+                    </div>
                 </div>
                 
                 <form id="attendance-form">
                     <div class="form-group">
-                        <label class="form-label" for="date"><i class="far fa-calendar mr-1"></i>Tanggal Kerja</label>
+                        <label class="form-label" for="date">
+                            <i class="far fa-calendar"></i>
+                            Tanggal Kerja
+                        </label>
                         <input type="date" id="date" class="form-control" required>
                     </div>
                     
-                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label" for="start-time">Jam Masuk</label>
+                            <label class="form-label" for="start-time">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Jam Masuk
+                            </label>
                             <input type="time" id="start-time" class="form-control" value="08:00" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="end-time">Jam Pulang</label>
+                            <label class="form-label" for="end-time">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Jam Pulang
+                            </label>
                             <input type="time" id="end-time" class="form-control" value="17:00" required>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="break-time"><i class="fas fa-coffee mr-1"></i>Waktu Istirahat</label>
+                        <label class="form-label" for="break-time">
+                            <i class="fas fa-coffee"></i>
+                            Waktu Istirahat
+                        </label>
                         <select id="break-time" class="form-control">
                             <option value="1">1 jam (Standar)</option>
                             <option value="0.5">30 menit</option>
@@ -678,32 +947,37 @@
                             <option value="2">2 jam</option>
                             <option value="0">Tidak ada</option>
                         </select>
-                        <div class="form-help">Waktu istirahat tidak termasuk dalam perhitungan jam kerja</div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="overtime"><i class="fas fa-clock mr-1"></i>Jam Lembur (Opsional)</label>
+                        <label class="form-label" for="overtime">
+                            <i class="fas fa-clock"></i>
+                            Jam Lembur (Opsional)
+                        </label>
                         <input type="number" id="overtime" class="form-control" min="0" step="0.5" placeholder="Contoh: 3.5">
-                        <div class="form-help">Masukkan dalam format jam (contoh: 3.5 untuk 3 jam 30 menit)</div>
+                        <div class="text-xs text-muted mt-2">Masukkan dalam format jam (contoh: 3.5 untuk 3 jam 30 menit)</div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="note"><i class="fas fa-sticky-note mr-1"></i>Catatan</label>
-                        <textarea id="note" class="form-control" rows="3" placeholder="Tambah catatan (kontrak, meeting, tugas khusus, dll.)"></textarea>
+                        <label class="form-label" for="note">
+                            <i class="fas fa-sticky-note"></i>
+                            Catatan
+                        </label>
+                        <textarea id="note" class="form-control" rows="3" placeholder="Tambahkan catatan khusus..."></textarea>
                     </div>
                     
                     <div class="btn-group">
                         <button type="submit" id="submit-btn" class="btn btn-primary">
-                            <i class="fas fa-save mr-2"></i>Simpan Kehadiran
+                            <i class="fas fa-save mr-2"></i>Simpan Data
                         </button>
-                        <button type="button" id="update-btn" class="btn btn-warning" style="display: none;">
-                            <i class="fas fa-sync-alt mr-2"></i>Update Data
+                        <button type="button" id="update-btn" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-sync-alt mr-2"></i>Update
                         </button>
                         <button type="button" id="cancel-edit" class="btn btn-outline" style="display: none;">
-                            <i class="fas fa-times mr-2"></i>Batal Edit
+                            <i class="fas fa-times mr-2"></i>Batal
                         </button>
                         <button type="button" id="reset-form" class="btn btn-outline">
-                            <i class="fas fa-redo mr-2"></i>Reset Form
+                            <i class="fas fa-redo mr-2"></i>Reset
                         </button>
                     </div>
                     
@@ -711,70 +985,95 @@
                 </form>
             </div>
             
-            <!-- Salary Configuration -->
-            <div class="card">
-                <h2><i class="fas fa-calculator mr-2"></i>Konfigurasi Gaji</h2>
+            <!-- Configuration -->
+            <div class="main-card">
+                <div class="card-header">
+                    <h2>Konfigurasi Sistem</h2>
+                </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Gaji Bulanan</label>
-                    <div class="input-group" style="display: flex; gap: 10px;">
+                    <label class="form-label" for="monthly-salary">
+                        <i class="fas fa-money-bill"></i>
+                        Gaji Bulanan
+                    </label>
+                    <div class="form-grid">
                         <input type="number" id="monthly-salary" class="form-control" value="5500000" min="1000000" step="500000">
                         <button type="button" id="save-salary" class="btn btn-success">
                             <i class="fas fa-check mr-2"></i>Simpan
                         </button>
                     </div>
-                    <div class="form-help">Gaji digunakan untuk menghitung upah per jam (dibagi 173 jam kerja bulanan)</div>
                 </div>
                 
-                <div class="preset-buttons" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
-                    <button type="button" class="btn btn-outline btn-sm" data-salary="4500000">Rp 4,5 JT</button>
-                    <button type="button" class="btn btn-outline btn-sm" data-salary="5500000">Rp 5,5 JT</button>
-                    <button type="button" class="btn btn-outline btn-sm" data-salary="6500000">Rp 6,5 JT</button>
-                    <button type="button" class="btn btn-outline btn-sm" data-salary="7500000">Rp 7,5 JT</button>
-                    <button type="button" class="btn btn-outline btn-sm" data-salary="8500000">Rp 8,5 JT</button>
+                <div class="form-group">
+                    <label class="form-label" for="end-normal-time">
+                        <i class="fas fa-stopwatch"></i>
+                        Batas Waktu Normal
+                    </label>
+                    <input type="time" id="end-normal-time" class="form-control" value="04:00">
+                </div>
+                
+                <div class="separator" style="height: 1px; background: var(--gray-200); margin: 24px 0;"></div>
+                
+                <h3 class="mb-4">Manajemen Data</h3>
+                <div class="btn-group" style="margin-top: 0;">
+                    <button id="delete-all-data" class="btn btn-danger">
+                        <i class="fas fa-trash-alt mr-2"></i>Hapus Semua
+                    </button>
+                    <button id="export-data" class="btn btn-outline">
+                        <i class="fas fa-download mr-2"></i>Export
+                    </button>
+                    <button id="backup-data" class="btn btn-outline">
+                        <i class="fas fa-file-export mr-2"></i>Backup
+                    </button>
                 </div>
             </div>
         </div>
         
-        <!-- Right Column: Data & Reports -->
+        <!-- Right Column -->
         <div>
-            <!-- Attendance Records -->
-            <div class="card mb-4">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2><i class="fas fa-history mr-2"></i>Riwayat Kehadiran</h2>
+            <!-- Attendance Table -->
+            <div class="main-card">
+                <div class="card-header">
                     <div>
-                        <button id="export-data" class="btn btn-outline btn-sm">
-                            <i class="fas fa-download mr-2"></i>Export
-                        </button>
+                        <h2>Riwayat Kehadiran</h2>
+                        <p class="text-sm text-muted" id="record-count">Total 0 records</p>
+                    </div>
+                    <div class="card-actions">
                         <button id="print-data" class="btn btn-outline btn-sm">
                             <i class="fas fa-print mr-2"></i>Print
                         </button>
+                        <div class="badge badge-info">
+                            <i class="fas fa-database mr-2"></i>Local Storage
+                        </div>
                     </div>
                 </div>
                 
-                <div class="table-container">
-                    <table id="attendance-table">
+                <div class="table-wrapper">
+                    <table class="table" id="attendance-table">
                         <thead>
                             <tr>
-                                <th>Tanggal</th>
+                                <th>Tanggal & Hari</th>
                                 <th>Jam Kerja</th>
                                 <th>Istirahat</th>
                                 <th>Lembur</th>
                                 <th>Total</th>
                                 <th>Catatan</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="attendance-data">
-                            <!-- Data akan diisi oleh JavaScript -->
+                            <!-- Data akan diisi -->
                         </tbody>
                     </table>
                     
                     <div id="empty-state" class="empty-state">
-                        <i class="fas fa-clipboard-list"></i>
+                        <div class="empty-state-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
                         <h3>Belum Ada Data</h3>
-                        <p>Mulai dengan menambahkan data kehadiran Anda</p>
-                        <button id="add-first-data" class="btn btn-primary mt-2">
+                        <p class="text-muted">Mulai dengan menambahkan data kehadiran Anda</p>
+                        <button id="add-first-data" class="btn btn-primary mt-4">
                             <i class="fas fa-plus mr-2"></i>Tambah Data Pertama
                         </button>
                     </div>
@@ -782,25 +1081,25 @@
             </div>
             
             <!-- Salary Calculation -->
-            <div class="card calculation-panel">
-                <h2><i class="fas fa-chart-bar mr-2"></i>Ringkasan Gaji</h2>
+            <div class="calculation-panel">
+                <h2 style="color: white; margin-bottom: 32px;">Ringkasan Gaji</h2>
                 
                 <div class="calculation-grid">
-                    <div class="calculation-item">
+                    <div class="calc-item">
                         <div class="calc-value" id="calc-total-days">0</div>
                         <div class="calc-label">Hari Kerja</div>
                     </div>
-                    <div class="calculation-item">
+                    <div class="calc-item">
                         <div class="calc-value" id="calc-total-hours">0</div>
                         <div class="calc-label">Total Jam</div>
                     </div>
-                    <div class="calculation-item">
+                    <div class="calc-item">
                         <div class="calc-value" id="calc-overtime-hours">0</div>
                         <div class="calc-label">Jam Lembur</div>
                     </div>
-                    <div class="calculation-item">
+                    <div class="calc-item">
                         <div class="calc-value" id="calc-hourly-rate">Rp 0</div>
-                        <div class="calc-label">Upah per Jam</div>
+                        <div class="calc-label">Upah/Jam</div>
                     </div>
                 </div>
                 
@@ -811,52 +1110,91 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="footer-content">
             <div>
-                <p>© 2025 HR Attendance System v2.0</p>
-                <p class="text-muted">Sistem Manajemen Kehadiran Professional</p>
+                <p class="text-sm">© 2025 <strong>WorkSync</strong> v3.0</p>
+                <p class="text-xs text-muted">Your Workforce, Perfectly Synchronized</p>
             </div>
             <div class="footer-links">
-                <a href="#" class="footer-link" id="contact-support">
-                    <i class="fas fa-headset mr-1"></i>Support
-                </a>
-                <a href="#" class="footer-link" id="send-feedback">
-                    <i class="fas fa-comment-alt mr-1"></i>Feedback
-                </a>
-                <a href="#" class="footer-link" id="privacy-policy">
-                    <i class="fas fa-shield-alt mr-1"></i>Privacy
-                </a>
+                <a href="#" class="footer-link" id="contact-support">Support</a>
+                <a href="#" class="footer-link" id="privacy-policy">Privacy</a>
+                <a href="#" class="footer-link" id="terms">Terms</a>
             </div>
         </div>
     </footer>
 
+    <!-- Delete Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: white; margin: 0;">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Konfirmasi Hapus
+                </h3>
+                <button class="close-modal" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="width: 80px; height: 80px; background: rgba(255, 23, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-trash-alt" style="font-size: 32px; color: var(--danger);"></i>
+                    </div>
+                    <h3>Hapus Semua Data?</h3>
+                    <p class="text-muted">Anda akan menghapus <strong id="delete-count">0</strong> data kehadiran.</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ketik "HAPUS" untuk konfirmasi</label>
+                    <input type="text" id="confirm-delete" class="form-control" placeholder="Ketik HAPUS disini...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-delete" class="btn btn-outline">Batal</button>
+                <button id="confirm-delete-btn" class="btn btn-danger" disabled>
+                    <i class="fas fa-trash-alt mr-2"></i>Hapus Semua
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script>
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        
-        // Data structure
+        // ==================== DATA MANAGEMENT ====================
         let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [
             { date: "11/12/2025", hours: "08.00–17.00", breakTime: 1, overtime: 0, totalHours: 8, note: "Ttd kontrak" },
             { date: "12/12/2025", hours: "07.00–16.00", breakTime: 1, overtime: 0, totalHours: 8, note: "Induction" },
             { date: "13/12/2025", hours: "07.00–16.00", breakTime: 1, overtime: 0, totalHours: 8, note: "Induction" },
-            { date: "15/12/2025", hours: "19.00–06.00", breakTime: 1, overtime: 3.5, totalHours: 10.5, note: "Kerja lembur" },
-            { date: "16/12/2025", hours: "18.00–08.00", breakTime: 1, overtime: 2.5, totalHours: 10.5, note: "" }
+            { date: "15/12/2025", hours: "19.00–06.00", breakTime: 1, overtime: 3.5, totalHours: 11.5, note: "Kerja lembur" },
+            { date: "16/12/2025", hours: "18.00–08.00", breakTime: 1, overtime: 2.5, totalHours: 10, note: "" }
         ];
         
         let monthlySalary = parseInt(localStorage.getItem('monthlySalary')) || 5500000;
+        let endNormalTime = localStorage.getItem('endNormalTime') || '04:00';
         let isEditMode = false;
         let currentEditIndex = -1;
 
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
-        
+        // ==================== UTILITY FUNCTIONS ====================
         function formatRupiah(amount) {
             return 'Rp ' + amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        
+        // Fungsi untuk mendapatkan hari dari tanggal Indonesia
+        function getDayName(dateString) {
+            const [day, month, year] = dateString.split('/').map(Number);
+            const date = new Date(year, month - 1, day);
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            return days[date.getDay()];
+        }
+        
+        // Fungsi untuk menentukan apakah hari weekend
+        function isWeekend(dateString) {
+            const [day, month, year] = dateString.split('/').map(Number);
+            const date = new Date(year, month - 1, day);
+            const dayOfWeek = date.getDay();
+            return dayOfWeek === 0 || dayOfWeek === 6; // 0 = Minggu, 6 = Sabtu
         }
         
         function formatDate(dateString) {
@@ -874,7 +1212,7 @@
         
         function formatTime(startTime, endTime) {
             const start = startTime.replace(':', '.');
-            const end = endTime.replace(':', '.');
+            const end = endTime.replace('.', ':');
             return `${start}–${end}`;
         }
         
@@ -897,59 +1235,113 @@
             }
             
             const totalMinutes = endTotalMinutes - startTotalMinutes;
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = totalMinutes % 60;
-            
-            let totalHours = hours + (minutes / 60);
+            let totalHours = totalMinutes / 60;
             totalHours -= breakTime;
             
-            return totalHours < 0 ? 0 : totalHours;
+            const [normalHour, normalMinute] = endNormalTime.split(':').map(Number);
+            const endNormalMinutes = normalHour * 60 + normalMinute + 24 * 60;
+            
+            if (endTotalMinutes > endNormalMinutes) {
+                const minutesAfterNormal = endTotalMinutes - endNormalMinutes;
+                totalHours = (totalMinutes - minutesAfterNormal) / 60 - breakTime;
+            }
+            
+            return totalHours < 0 ? 0 : parseFloat(totalHours.toFixed(1));
         }
         
         function saveData() {
             localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
             localStorage.setItem('monthlySalary', monthlySalary);
-        }
-        
-        function updateDateTime() {
-            const now = new Date();
-            const dateOptions = { day: 'numeric', month: 'short', year: 'numeric' };
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            
-            document.getElementById('current-date').textContent = 
-                now.toLocaleDateString('id-ID', dateOptions);
-            document.getElementById('current-time').textContent = 
-                now.toLocaleTimeString('id-ID', timeOptions);
+            localStorage.setItem('endNormalTime', endNormalTime);
         }
         
         function showToast(message, type = 'info') {
-            // Hapus toast sebelumnya
-            document.querySelectorAll('.toast').forEach(toast => toast.remove());
-            
-            // Create toast element
             const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
+            toast.className = `toast`;
+            toast.style.background = type === 'success' ? 'var(--accent)' : 
+                                   type === 'error' ? 'var(--danger)' : 
+                                   'var(--secondary)';
+            
+            const icon = type === 'success' ? 'check-circle' : 
+                        type === 'error' ? 'exclamation-circle' : 
+                        'info-circle';
+            
             toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <i class="fas fa-${icon}"></i>
                 ${message}
             `;
             
             document.body.appendChild(toast);
             
-            // Remove toast after 3 seconds
             setTimeout(() => {
-                toast.style.animation = 'slideOutRight 0.3s ease';
+                toast.style.animation = 'slideInRight 0.3s ease reverse';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // ============================================
-        // RENDER FUNCTIONS
-        // ============================================
-        
+        // ==================== PROFILE EDIT FEATURE ====================
+        function setupProfileEdit() {
+            const userProfile = document.getElementById('user-profile');
+            const userName = document.getElementById('user-name');
+            const userPosition = document.getElementById('user-position');
+            const userAvatar = document.getElementById('user-avatar');
+            
+            // Load saved profile from localStorage
+            const savedName = localStorage.getItem('hrUserName');
+            const savedPosition = localStorage.getItem('hrUserPosition');
+            
+            if (savedName) {
+                userName.textContent = savedName;
+                updateAvatar(savedName);
+            }
+            
+            if (savedPosition) {
+                userPosition.textContent = savedPosition;
+            }
+            
+            // Click to edit profile
+            userProfile.addEventListener('click', function() {
+                const currentName = userName.textContent;
+                const currentPosition = userPosition.textContent;
+                
+                // Edit name
+                const newName = prompt('Masukkan nama Anda:', currentName);
+                if (newName && newName.trim() !== '') {
+                    userName.textContent = newName;
+                    updateAvatar(newName);
+                    localStorage.setItem('hrUserName', newName);
+                    showToast('Nama berhasil diupdate!', 'success');
+                }
+                
+                // Edit position
+                const newPosition = prompt('Masukkan posisi/jabatan:', currentPosition);
+                if (newPosition && newPosition.trim() !== '') {
+                    userPosition.textContent = newPosition;
+                    localStorage.setItem('hrUserPosition', newPosition);
+                    showToast('Posisi berhasil diupdate!', 'success');
+                }
+            });
+            
+            // Function to update avatar initials
+            function updateAvatar(fullName) {
+                const initials = fullName
+                    .split(' ')
+                    .map(word => word[0])
+                    .join('')
+                    .toUpperCase()
+                    .substring(0, 2);
+                
+                userAvatar.textContent = initials;
+            }
+        }
+
+        // ==================== RENDER FUNCTIONS ====================
         function renderTable() {
             const tbody = document.getElementById('attendance-data');
             const emptyState = document.getElementById('empty-state');
+            const recordCount = document.getElementById('record-count');
+            
+            recordCount.textContent = `Total ${attendanceData.length} records`;
             
             if (attendanceData.length === 0) {
                 tbody.innerHTML = '';
@@ -959,28 +1351,55 @@
                 emptyState.style.display = 'none';
                 document.getElementById('attendance-table').style.display = 'table';
                 
-                tbody.innerHTML = attendanceData.map((item, index) => `
-                    <tr id="row-${index}" class="${index === currentEditIndex ? 'editing-row' : ''}">
-                        <td><strong>${item.date}</strong></td>
+                tbody.innerHTML = attendanceData.map((item, index) => {
+                    const dayName = getDayName(item.date);
+                    const isWeekendDay = isWeekend(item.date);
+                    const hasNote = item.note && item.note.trim() !== '';
+                    
+                    return `
+                    <tr id="row-${index}">
+                        <td>
+                            <div><strong>${item.date}</strong></div>
+                            <div class="day-badge ${isWeekendDay ? 'day-weekend' : 'day-weekday'}">
+                                <i class="fas ${isWeekendDay ? 'fa-umbrella-beach' : 'fa-briefcase'} mr-1"></i>
+                                ${dayName}
+                            </div>
+                        </td>
                         <td>${item.hours}</td>
                         <td>${item.breakTime === 0 ? '-' : item.breakTime + ' jam'}</td>
-                        <td>${item.overtime > 0 ? item.overtime + ' jam' : '-'}</td>
-                        <td><span class="status-badge badge-completed">${item.totalHours.toFixed(1)} jam</span></td>
-                        <td>${item.note || '-'}</td>
+                        <td>${item.overtime > 0 ? item.overtime.toFixed(1) + ' jam' : '-'}</td>
                         <td>
-                            <div style="display: flex; gap: 5px;">
-                                <button class="btn btn-outline btn-sm edit-btn" data-index="${index}" title="Edit data ini">
+                            <div class="badge ${item.totalHours >= 8 ? 'badge-success' : 'badge-warning'}">
+                                ${item.totalHours.toFixed(1)} jam
+                            </div>
+                        </td>
+                        <td class="notes-cell" id="note-cell-${index}" onclick="toggleNote(${index})">
+                            ${hasNote ? 
+                                `<span class="text-sm">${item.note}</span>` : 
+                                `<span class="text-muted text-sm">-</span>`
+                            }
+                        </td>
+                        <td>
+                            <div class="status-indicator">
+                                <div class="status-dot" style="background: ${item.totalHours >= 8 ? 'var(--accent)' : 'var(--warning)'}"></div>
+                                <span class="text-xs">${item.totalHours >= 8 ? 'Complete' : 'Pending'}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-outline btn-sm edit-btn" data-index="${index}" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-outline btn-sm delete-btn" data-index="${index}" title="Hapus data ini">
+                                <button class="btn btn-outline btn-sm delete-btn" data-index="${index}" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </td>
                     </tr>
-                `).join('');
+                    `;
+                }).join('');
                 
-                // Add event listeners untuk edit dan delete
+                // Add event listeners
                 document.querySelectorAll('.edit-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -1002,6 +1421,12 @@
             updateStats();
         }
         
+        // Fungsi untuk toggle note (expand/collapse)
+        window.toggleNote = function(index) {
+            const noteCell = document.getElementById(`note-cell-${index}`);
+            noteCell.classList.toggle('expanded');
+        };
+        
         function updateCalculations() {
             let totalDays = attendanceData.length;
             let totalHours = 0;
@@ -1015,7 +1440,6 @@
             const hourlyRate = monthlySalary / 173;
             const estimatedSalary = totalHours * hourlyRate;
             
-            // Update calculation panel
             document.getElementById('calc-total-days').textContent = totalDays;
             document.getElementById('calc-total-hours').textContent = totalHours.toFixed(1);
             document.getElementById('calc-overtime-hours').textContent = overtimeHours.toFixed(1);
@@ -1034,19 +1458,15 @@
             const hourlyRate = monthlySalary / 173;
             const estimatedSalary = totalHours * hourlyRate;
             
-            document.getElementById('stat-total-hours').textContent = totalHours.toFixed(1);
-            document.getElementById('stat-total-days').textContent = totalDays;
+            document.getElementById('stat-total-hours').textContent = totalHours.toFixed(1) + ' jam';
+            document.getElementById('stat-total-days').textContent = totalDays + ' hari';
             document.getElementById('stat-estimated-salary').textContent = formatRupiah(estimatedSalary);
         }
 
-        // ============================================
-        // ATTENDANCE MANAGEMENT - FIXED EDIT FUNCTION
-        // ============================================
-        
+        // ==================== ATTENDANCE MANAGEMENT ====================
         function addAttendance(e) {
             e.preventDefault();
             
-            // Jika sedang mode edit, jangan tambah data baru
             if (isEditMode) {
                 showToast('Selesaikan edit terlebih dahulu', 'error');
                 return;
@@ -1056,29 +1476,29 @@
             const startTime = document.getElementById('start-time').value;
             const endTime = document.getElementById('end-time').value;
             const breakTime = parseFloat(document.getElementById('break-time').value);
-            const overtime = parseFloat(document.getElementById('overtime').value) || 0;
+            const inputOvertime = parseFloat(document.getElementById('overtime').value) || 0;
             const note = document.getElementById('note').value;
             
             if (!date || !startTime || !endTime) {
-                showToast('Harap isi tanggal, jam masuk, dan jam pulang', 'error');
+                showToast('Harap isi semua field yang diperlukan', 'error');
                 return;
             }
             
+            const normalHours = calculateHours(startTime, endTime, breakTime);
+            const totalHours = normalHours + inputOvertime;
+            
             const formattedDate = formatDate(date);
             const formattedHours = formatTime(startTime, endTime);
-            let totalHours = calculateHours(startTime, endTime, breakTime);
-            totalHours += overtime;
             
             const attendance = {
                 date: formattedDate,
                 hours: formattedHours,
                 breakTime: breakTime,
-                overtime: overtime,
+                overtime: inputOvertime,
                 totalHours: totalHours,
                 note: note
             };
             
-            // Tambah data baru
             attendanceData.push(attendance);
             saveData();
             renderTable();
@@ -1088,13 +1508,10 @@
         }
         
         function editAttendance(index) {
-            if (index < 0 || index >= attendanceData.length) return;
-            
             const data = attendanceData[index];
             const dateInput = parseDateForInput(data.date);
             const timeRange = parseTimeRange(data.hours);
             
-            // Isi form dengan data yang akan diedit
             document.getElementById('date').value = dateInput;
             document.getElementById('start-time').value = timeRange.startTime;
             document.getElementById('end-time').value = timeRange.endTime;
@@ -1103,115 +1520,80 @@
             document.getElementById('note').value = data.note || '';
             document.getElementById('edit-index').value = index;
             
-            // Aktifkan mode edit
             activateEditMode(index);
         }
         
         function updateAttendance() {
             const index = parseInt(document.getElementById('edit-index').value);
             
-            if (index < 0 || index >= attendanceData.length) {
-                showToast('Data tidak ditemukan', 'error');
-                return;
-            }
-            
-            // Ambil data dari form
             const date = document.getElementById('date').value;
             const startTime = document.getElementById('start-time').value;
             const endTime = document.getElementById('end-time').value;
             const breakTime = parseFloat(document.getElementById('break-time').value);
-            const overtime = parseFloat(document.getElementById('overtime').value) || 0;
+            const inputOvertime = parseFloat(document.getElementById('overtime').value) || 0;
             const note = document.getElementById('note').value;
             
-            if (!date || !startTime || !endTime) {
-                showToast('Harap isi semua field yang diperlukan', 'error');
-                return;
-            }
+            const normalHours = calculateHours(startTime, endTime, breakTime);
+            const totalHours = normalHours + inputOvertime;
             
-            // Format data baru
             const formattedDate = formatDate(date);
             const formattedHours = formatTime(startTime, endTime);
-            let totalHours = calculateHours(startTime, endTime, breakTime);
-            totalHours += overtime;
             
-            // UPDATE DATA YANG SUDAH ADA DI ARRAY
-            // Ini yang penting: hanya update, tidak push data baru
             attendanceData[index] = {
                 date: formattedDate,
                 hours: formattedHours,
                 breakTime: breakTime,
-                overtime: overtime,
+                overtime: inputOvertime,
                 totalHours: totalHours,
                 note: note
             };
             
-            // Simpan dan render ulang
             saveData();
             renderTable();
-            
-            // Nonaktifkan mode edit
             deactivateEditMode();
             
-            showToast('Data berhasil diperbarui', 'success');
+            showToast('Data berhasil diupdate', 'success');
         }
         
         function deleteAttendance(index) {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            if (confirm('Hapus data ini?')) {
                 attendanceData.splice(index, 1);
                 saveData();
                 renderTable();
-                
-                // Jika sedang mode edit dan data yang dihapus adalah yang sedang diedit
-                if (isEditMode && currentEditIndex === index) {
-                    deactivateEditMode();
-                }
-                
                 showToast('Data berhasil dihapus', 'success');
             }
+        }
+        
+        function deleteAllData() {
+            attendanceData = [];
+            saveData();
+            renderTable();
+            document.getElementById('delete-modal').style.display = 'none';
+            showToast('Semua data berhasil dihapus', 'success');
         }
         
         function activateEditMode(index) {
             isEditMode = true;
             currentEditIndex = index;
-            
-            // Update UI untuk mode edit
-            document.getElementById('edit-notice').classList.add('show');
-            document.getElementById('form-section').classList.add('edit-mode');
+            document.getElementById('edit-notice').style.display = 'block';
             document.getElementById('submit-btn').style.display = 'none';
             document.getElementById('update-btn').style.display = 'flex';
             document.getElementById('cancel-edit').style.display = 'flex';
             document.getElementById('reset-form').style.display = 'none';
-            
-            // Update judul form
-            document.querySelector('#form-section h2').innerHTML = 
-                '<i class="fas fa-edit mr-2"></i>Edit Data Kehadiran';
-            
-            // Scroll ke form
-            document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
         }
         
         function deactivateEditMode() {
             isEditMode = false;
             currentEditIndex = -1;
-            
-            // Reset UI dari mode edit
-            document.getElementById('edit-notice').classList.remove('show');
-            document.getElementById('form-section').classList.remove('edit-mode');
+            document.getElementById('edit-notice').style.display = 'none';
             document.getElementById('submit-btn').style.display = 'flex';
             document.getElementById('update-btn').style.display = 'none';
             document.getElementById('cancel-edit').style.display = 'none';
             document.getElementById('reset-form').style.display = 'flex';
-            document.getElementById('edit-index').value = '-1';
-            
-            // Kembalikan judul form
-            document.querySelector('#form-section h2').innerHTML = 
-                '<i class="fas fa-calendar-plus mr-2"></i>Input Kehadiran';
-            
             resetForm();
         }
         
         function resetForm() {
-            // Reset form ke nilai default
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('date').value = today;
             document.getElementById('start-time').value = '08:00';
@@ -1221,89 +1603,10 @@
             document.getElementById('note').value = '';
         }
 
-        // ============================================
-        // SALARY MANAGEMENT
-        // ============================================
-        
-        function updateSalary() {
-            const newSalary = parseInt(document.getElementById('monthly-salary').value);
-            
-            if (!newSalary || newSalary < 1000000) {
-                showToast('Masukkan gaji yang valid (minimal Rp 1,000,000)', 'error');
-                return;
-            }
-            
-            monthlySalary = newSalary;
-            saveData();
-            updateCalculations();
-            updateStats();
-            
-            showToast(`Gaji berhasil diupdate menjadi ${formatRupiah(monthlySalary)}`, 'success');
-        }
-
-        // ============================================
-        // EXPORT FUNCTIONS
-        // ============================================
-        
-        function exportToCSV() {
-            try {
-                if (attendanceData.length === 0) {
-                    showToast('Tidak ada data untuk diexport', 'error');
-                    return;
-                }
-                
-                // Buat header CSV
-                let csvContent = "Tanggal,Jam Kerja,Jam Istirahat,Jam Lembur,Total Jam,Catatan\n";
-                
-                // Tambahkan data
-                attendanceData.forEach(item => {
-                    const row = [
-                        `"${item.date}"`,
-                        `"${item.hours}"`,
-                        item.breakTime,
-                        item.overtime,
-                        item.totalHours.toFixed(1),
-                        `"${item.note || ''}"`
-                    ];
-                    csvContent += row.join(',') + '\n';
-                });
-                
-                // Buat blob dan download
-                const today = new Date();
-                const dateStr = today.toISOString().split('T')[0];
-                const filename = `kehadiran-${dateStr}.csv`;
-                
-                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                
-                link.href = url;
-                link.download = filename;
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                
-                // Cleanup
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                showToast(`Data berhasil diexport ke ${filename}`, 'success');
-                
-            } catch (error) {
-                console.error('Export error:', error);
-                showToast('Terjadi kesalahan saat export', 'error');
-            }
-        }
-
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-        
+        // ==================== EVENT LISTENERS ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize
-            generateManifest();
+            // Setup profile edit feature
+            setupProfileEdit();
             
             // Set default date
             const today = new Date().toISOString().split('T')[0];
@@ -1311,106 +1614,102 @@
             
             // Initial render
             renderTable();
+            
+            // Update time display
+            function updateDateTime() {
+                const now = new Date();
+                const dateOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+                const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                
+                document.getElementById('current-date').textContent = 
+                    now.toLocaleDateString('id-ID', dateOptions);
+                document.getElementById('current-time').textContent = 
+                    now.toLocaleTimeString('id-ID', timeOptions);
+            }
+            
             updateDateTime();
             setInterval(updateDateTime, 1000);
             
-            // ===== FORM SUBMISSION =====
+            // Form submission
             document.getElementById('attendance-form').addEventListener('submit', addAttendance);
+            document.getElementById('update-btn').addEventListener('click', updateAttendance);
+            document.getElementById('cancel-edit').addEventListener('click', deactivateEditMode);
+            document.getElementById('reset-form').addEventListener('click', resetForm);
             
-            // ===== BUTTON CLICK HANDLERS =====
-            document.getElementById('update-btn').addEventListener('click', function(e) {
-                e.preventDefault();
-                updateAttendance();
-            });
-            
-            document.getElementById('cancel-edit').addEventListener('click', function(e) {
-                e.preventDefault();
-                deactivateEditMode();
-            });
-            
-            document.getElementById('reset-form').addEventListener('click', function(e) {
-                e.preventDefault();
-                if (isEditMode) {
-                    if (confirm('Batalkan edit? Perubahan akan hilang.')) {
-                        deactivateEditMode();
-                    }
-                } else {
-                    resetForm();
-                    showToast('Form telah direset', 'info');
-                }
-            });
-            
+            // Add first data
             document.getElementById('add-first-data').addEventListener('click', function() {
                 document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
             });
             
-            // ===== SALARY CONFIGURATION =====
-            document.getElementById('save-salary').addEventListener('click', updateSalary);
+            // Salary configuration
+            document.getElementById('save-salary').addEventListener('click', function() {
+                const newSalary = parseInt(document.getElementById('monthly-salary').value);
+                if (newSalary >= 1000000) {
+                    monthlySalary = newSalary;
+                    saveData();
+                    updateCalculations();
+                    updateStats();
+                    showToast('Gaji berhasil diupdate', 'success');
+                }
+            });
             
-            document.querySelectorAll('.preset-buttons button').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const salary = parseInt(this.dataset.salary);
-                    document.getElementById('monthly-salary').value = salary;
-                    updateSalary();
+            // Data management
+            document.getElementById('delete-all-data').addEventListener('click', function() {
+                if (attendanceData.length === 0) {
+                    showToast('Tidak ada data untuk dihapus', 'info');
+                    return;
+                }
+                document.getElementById('delete-count').textContent = attendanceData.length;
+                document.getElementById('delete-modal').style.display = 'flex';
+            });
+            
+            document.getElementById('export-data').addEventListener('click', function() {
+                if (attendanceData.length === 0) {
+                    showToast('Tidak ada data untuk diexport', 'error');
+                    return;
+                }
+                
+                let csvContent = "Tanggal,Hari,Jam Kerja,Istirahat,Lembur,Total Jam,Catatan,Status\n";
+                attendanceData.forEach(item => {
+                    const dayName = getDayName(item.date);
+                    const status = item.totalHours >= 8 ? 'Complete' : 'Pending';
+                    csvContent += `"${item.date}","${dayName}","${item.hours}",${item.breakTime},${item.overtime},${item.totalHours},"${item.note || ''}","${status}"\n`;
                 });
+                
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `worksync-export-${new Date().toISOString().split('T')[0]}.csv`;
+                link.click();
+                
+                showToast('Data berhasil diexport', 'success');
             });
             
-            // ===== EXPORT FUNCTIONALITY =====
-            document.getElementById('export-data').addEventListener('click', exportToCSV);
-            
-            document.getElementById('print-data').addEventListener('click', function() {
-                window.print();
+            // Modal events
+            document.getElementById('confirm-delete').addEventListener('input', function() {
+                document.getElementById('confirm-delete-btn').disabled = 
+                    this.value.toUpperCase() !== 'HAPUS';
             });
             
-            // ===== FOOTER LINKS =====
-            document.getElementById('contact-support').addEventListener('click', function(e) {
-                e.preventDefault();
-                window.location.href = 'mailto:muhammadjamilalfaizs@gmail.com?subject=Support%20HR%20Attendance%20System';
+            document.getElementById('confirm-delete-btn').addEventListener('click', deleteAllData);
+            
+            document.getElementById('cancel-delete').addEventListener('click', function() {
+                document.getElementById('delete-modal').style.display = 'none';
             });
             
-            document.getElementById('send-feedback').addEventListener('click', function(e) {
-                e.preventDefault();
-                window.location.href = 'mailto:muhammadjamilalfaizs@gmail.com?subject=Feedback%20HR%20Attendance%20System';
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                document.getElementById('delete-modal').style.display = 'none';
             });
             
-            document.getElementById('privacy-policy').addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Kebijakan Privasi:\n\nData kehadiran disimpan secara lokal di browser Anda. Kami tidak mengumpulkan atau mengirim data ke server manapun.');
-            });
-            
-            // ===== KEYBOARD SHORTCUTS =====
+            // Close modal on ESC
             document.addEventListener('keydown', function(e) {
-                // ESC untuk cancel edit
-                if (e.key === 'Escape' && isEditMode) {
-                    if (confirm('Batalkan edit? Perubahan akan hilang.')) {
-                        deactivateEditMode();
-                    }
+                if (e.key === 'Escape') {
+                    document.getElementById('delete-modal').style.display = 'none';
+                    if (isEditMode) deactivateEditMode();
                 }
             });
         });
-        
-        function generateManifest() {
-            const manifest = {
-                "name": "HR Attendance System",
-                "short_name": "Attendance",
-                "description": "Professional Attendance Management System",
-                "start_url": ".",
-                "display": "standalone",
-                "background_color": "#1a365d",
-                "theme_color": "#1a365d",
-                "icons": [
-                    {
-                        "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233182ce%22>📊</text></svg>",
-                        "sizes": "192x192",
-                        "type": "image/svg+xml"
-                    }
-                ]
-            };
-            
-            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-            const manifestURL = URL.createObjectURL(manifestBlob);
-            document.getElementById('app-manifest').href = manifestURL;
-        }
     </script>
 </body>
 </html>
