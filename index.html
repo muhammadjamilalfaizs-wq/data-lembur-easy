@@ -1420,29 +1420,47 @@
             }, 3000);
         }
 
-        // ==================== FUNGSI UNTUK HITUNG TOTAL ====================
+        // ==================== FUNGSI UNTUK HITUNG TOTAL YANG BENAR ====================
         function hitungTotalSummary() {
             let totalHariKerja = attendanceData.length;
             let totalJamKerja = 0;
-            let totalJamLembur = 0;
+            let totalJamLemburReal = 0;
+            let totalJamLemburSetara = 0;
             let totalJamNormal = 0;
-            let totalGaji = 0;
+            let totalJamDibayar = 0;
             
             const hourlyRate = monthlySalary / 173;
             
             attendanceData.forEach(item => {
                 const details = item.calculationDetails || {};
-                totalJamKerja += item.totalHours || 0;
-                totalJamLembur += details.nilaiLembur || 0;
+                
+                // Total jam kerja sebenarnya (termasuk istirahat)
+                totalJamKerja += details.totalJamKerjaReal || 0;
+                
+                // Jam normal
                 totalJamNormal += details.jamNormal || 0;
-                totalGaji += (item.totalHours || 0) * hourlyRate;
+                
+                // Jam lembur real (jam lembur aktual)
+                totalJamLemburReal += details.jamLemburReal || 0;
+                
+                // Jam lembur setara (setelah konversi)
+                totalJamLemburSetara += details.nilaiLembur || 0;
+                
+                // Total jam yang dibayar (normal + lembur setara)
+                totalJamDibayar += details.totalDibayarDalamJam || 0;
             });
+            
+            // Hitung total gaji dengan formula yang benar
+            // Gaji = (Jam Normal * Rate Normal) + (Jam Lembur Setara * Rate Normal)
+            const totalGaji = totalJamDibayar * hourlyRate;
             
             return {
                 totalHariKerja,
                 totalJamKerja: totalJamKerja.toFixed(1),
-                totalJamLembur: totalJamLembur.toFixed(1),
+                totalJamLemburReal: totalJamLemburReal.toFixed(1),
+                totalJamLemburSetara: totalJamLemburSetara.toFixed(1),
                 totalJamNormal: totalJamNormal.toFixed(1),
+                totalJamDibayar: totalJamDibayar.toFixed(1),
                 totalGaji: totalGaji.toFixed(0)
             };
         }
@@ -1477,8 +1495,8 @@
             csvContent += "----------------\n";
             csvContent += `Total Hari Kerja: ${summary.totalHariKerja} hari\n`;
             csvContent += `Total Jam Normal: ${summary.totalJamNormal} jam\n`;
-            csvContent += `Total Jam Lembur: ${summary.totalJamLembur} jam (setara)\n`;
-            csvContent += `Total Jam Kerja: ${summary.totalJamKerja} jam\n`;
+            csvContent += `Total Jam Lembur: ${summary.totalJamLemburSetara} jam (setara)\n`;
+            csvContent += `Total Jam Dibayar: ${summary.totalJamDibayar} jam\n`;
             csvContent += `Total Gaji: ${formatRupiah(parseFloat(summary.totalGaji))}\n\n`;
             
             // DETAIL DATA
@@ -1498,7 +1516,7 @@
                 csvContent += `${index + 1},"${item.date}","${dayName}","${tipeHariText}","${timeRange.startTime}","${timeRange.endTime}",`;
                 csvContent += `${details.totalJamKerjaReal?.toFixed(1) || 0},${item.breakTime},`;
                 csvContent += `${details.jamNormal || 0},${details.jamLemburReal || 0},`;
-                csvContent += `${details.nilaiLembur?.toFixed(1) || 0},${item.totalHours?.toFixed(1) || 0},"${item.note || ''}"\n`;
+                csvContent += `${details.nilaiLembur?.toFixed(1) || 0},${details.totalDibayarDalamJam?.toFixed(1) || 0},"${item.note || ''}"\n`;
             });
             
             // FOOTER
@@ -1517,19 +1535,6 @@
             link.href = url;
             link.download = `worksync-report-${new Date().toISOString().split('T')[0]}.csv`;
             link.click();
-            
-            // Tampilkan summary dalam alert
-            const summaryMessage = `
-📊 RINGKASAN EXPORT DATA:
-
-🗓️ Total Hari Kerja: ${summary.totalHariKerja} hari
-⏰ Total Jam Normal: ${summary.totalJamNormal} jam
-🔥 Total Jam Lembur: ${summary.totalJamLembur} jam (setara)
-⏱️ Total Jam Kerja: ${summary.totalJamKerja} jam
-💰 Total Gaji: ${formatRupiah(parseFloat(summary.totalGaji))}
-
-✅ Data berhasil diexport ke file CSV!
-            `;
             
             showToast('Data berhasil diexport dengan ringkasan lengkap!', 'success');
             
@@ -1579,7 +1584,7 @@
                                 </div>
                                 <div class="summary-item" style="background: var(--gray-50); padding: 16px; border-radius: var(--radius-md); text-align: center;">
                                     <div class="summary-value" style="font-size: 24px; font-weight: 700; color: var(--warning);">
-                                        ${summary.totalJamLembur}
+                                        ${summary.totalJamLemburSetara}
                                     </div>
                                     <div class="summary-label" style="font-size: 12px; color: var(--gray-600); margin-top: 4px;">
                                         <i class="fas fa-fire mr-1"></i> Jam Lembur
@@ -1587,10 +1592,10 @@
                                 </div>
                                 <div class="summary-item" style="background: var(--gray-50); padding: 16px; border-radius: var(--radius-md); text-align: center;">
                                     <div class="summary-value" style="font-size: 24px; font-weight: 700; color: var(--secondary);">
-                                        ${summary.totalJamKerja}
+                                        ${summary.totalJamDibayar}
                                     </div>
                                     <div class="summary-label" style="font-size: 12px; color: var(--gray-600); margin-top: 4px;">
-                                        <i class="fas fa-business-time mr-1"></i> Total Jam
+                                        <i class="fas fa-business-time mr-1"></i> Total Jam Dibayar
                                     </div>
                                 </div>
                             </div>
@@ -1933,43 +1938,29 @@
             });
         }
 
-        // ==================== CALCULATIONS ====================
+        // ==================== PERBAIKAN FUNGSI CALCULATIONS ====================
         function updateCalculations() {
-            let totalDays = attendanceData.length;
-            let totalHours = 0;
-            let overtimeHours = 0;
-            let normalHours = 0;
-            
-            attendanceData.forEach(item => {
-                totalHours += item.totalHours;
-                overtimeHours += (item.calculationDetails?.nilaiLembur || 0);
-                normalHours += (item.calculationDetails?.jamNormal || 0);
-            });
+            // Gunakan fungsi hitungTotalSummary yang sudah diperbaiki
+            const summary = hitungTotalSummary();
             
             const hourlyRate = monthlySalary / 173;
-            const estimatedSalary = totalHours * hourlyRate;
+            const totalGaji = parseFloat(summary.totalGaji);
             
-            document.getElementById('calc-total-days').textContent = totalDays;
-            document.getElementById('calc-total-hours').textContent = totalHours.toFixed(1);
-            document.getElementById('calc-overtime-hours').textContent = overtimeHours.toFixed(1);
+            // Update ringkasan gaji
+            document.getElementById('calc-total-days').textContent = summary.totalHariKerja;
+            document.getElementById('calc-total-hours').textContent = summary.totalJamDibayar;
+            document.getElementById('calc-overtime-hours').textContent = summary.totalJamLemburSetara;
             document.getElementById('calc-hourly-rate').textContent = formatRupiah(hourlyRate);
-            document.getElementById('calc-total-salary').textContent = formatRupiah(estimatedSalary);
+            document.getElementById('calc-total-salary').textContent = formatRupiah(totalGaji);
         }
 
         function updateStats() {
-            let totalHours = 0;
-            let totalDays = attendanceData.length;
+            const summary = hitungTotalSummary();
+            const totalGaji = parseFloat(summary.totalGaji);
             
-            attendanceData.forEach(item => {
-                totalHours += item.totalHours;
-            });
-            
-            const hourlyRate = monthlySalary / 173;
-            const estimatedSalary = totalHours * hourlyRate;
-            
-            document.getElementById('stat-total-hours').textContent = totalHours.toFixed(1) + ' jam';
-            document.getElementById('stat-total-days').textContent = totalDays + ' hari';
-            document.getElementById('stat-estimated-salary').textContent = formatRupiah(estimatedSalary);
+            document.getElementById('stat-total-hours').textContent = summary.totalJamDibayar + ' jam';
+            document.getElementById('stat-total-days').textContent = summary.totalHariKerja + ' hari';
+            document.getElementById('stat-estimated-salary').textContent = formatRupiah(totalGaji);
         }
 
         // ==================== ATTENDANCE MANAGEMENT ====================
